@@ -1,0 +1,216 @@
+================================================================================
+                    FIX: BUILD FAILED (Exit Code 1)
+================================================================================
+
+Your build failed! Let's fix it step by step.
+
+================================================================================
+                    STEP 1: Check What Files Are Missing
+================================================================================
+
+The most common reason for build failure is missing files.
+
+Go to your GitHub repository and check if these files exist:
+https://github.com/maxin3820-jpg/Doodle
+
+MUST HAVE FILES:
+☑️ gradlew (Unix executable)
+☑️ gradlew.bat (Windows batch file)
+☑️ build.gradle.kts
+☑️ settings.gradle.kts
+☑️ gradle/wrapper/gradle-wrapper.properties
+☑️ gradle/wrapper/gradle-wrapper.jar
+☑️ app/build.gradle.kts
+☑️ app/src/main/AndroidManifest.xml
+☑️ .github/workflows/build-apk.yml
+
+
+================================================================================
+                    STEP 2: Upload Missing Files
+================================================================================
+
+If any files are missing, upload them:
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle
+
+2. Click "Add file" → "Upload files"
+
+3. From your computer (c:\Users\zc\Desktop\othr\Doodle\), drag these:
+   - gradlew
+   - gradlew.bat
+   - gradle folder (entire folder)
+   - app folder (if not already there)
+
+4. Click "Commit changes"
+
+
+================================================================================
+                    STEP 3: Update the Workflow File
+================================================================================
+
+I've updated the workflow file on your computer with better error handling.
+
+Upload the new version:
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle
+
+2. Click on: .github/workflows/build-apk.yml
+
+3. Click the pencil icon (Edit) on the right
+
+4. Delete everything and paste this:
+
+---START COPYING FROM HERE---
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+    
+    - name: Create local.properties
+      run: |
+        echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
+        
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+      
+    - name: Validate Gradle wrapper
+      run: |
+        ls -la gradlew
+        file gradlew
+      
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace --info
+      
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: doodle-debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+        
+    - name: Upload build logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-logs
+        path: |
+          **/*.log
+          **/build/reports/
+---STOP COPYING HERE---
+
+5. Scroll down and click "Commit changes"
+
+
+================================================================================
+                    STEP 4: Check Build Logs
+================================================================================
+
+To see the EXACT error:
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. Click on the failed workflow run (red X)
+
+3. Click on "build" job
+
+4. Look for red error messages
+
+5. Tell me what the error says, and I'll help you fix it!
+
+Common errors:
+- "gradlew: not found" = gradlew file not uploaded
+- "Task 'assembleDebug' not found" = app/build.gradle.kts missing
+- "Could not find com.android.tools.build:gradle" = connection issue
+
+
+================================================================================
+                    STEP 5: Retry the Build
+================================================================================
+
+After fixing the issues:
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. Click on the failed run
+
+3. Click "Re-run all jobs" button (top right)
+
+OR just push a new commit to trigger another build automatically.
+
+
+================================================================================
+                    QUICK FIX: Make Sure All Files Are Uploaded
+================================================================================
+
+The easiest way to fix this:
+
+1. Delete everything in your GitHub repository
+
+2. Go to: https://github.com/maxin3820-jpg/Doodle
+
+3. Click on each file/folder and delete them
+
+4. Then upload ALL files from your computer again:
+   - Select ALL files and folders in c:\Users\zc\Desktop\othr\Doodle
+   - Drag them to GitHub
+   - Make sure .github folder is included (enable "Show hidden files")
+
+5. Commit changes
+
+6. Build will start automatically
+
+
+================================================================================
+                    TELL ME THE ERROR
+================================================================================
+
+Go to the build logs and tell me:
+
+1. What does the red error message say?
+2. Which step failed? (look for the red X in the list of steps)
+
+Then I can give you the exact fix!
+
+
+Common Issues:
+
+Issue: "gradlew: Permission denied"
+Fix: The workflow now fixes this automatically
+
+Issue: "Could not find build.gradle.kts"
+Fix: Upload the app folder with all contents
+
+Issue: "SDK location not found"
+Fix: The workflow now creates local.properties automatically
+
+Issue: "Gradle wrapper not found"
+Fix: Upload gradle/wrapper/gradle-wrapper.jar
+
+
+================================================================================
+
+                    NEXT STEP: Check your build logs!
+
+            https://github.com/maxin3820-jpg/Doodle/actions
+
+            Tell me what error you see!
+
+================================================================================

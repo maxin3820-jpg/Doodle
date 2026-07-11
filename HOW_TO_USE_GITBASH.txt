@@ -1,0 +1,148 @@
+================================================================================
+                    HOW TO PUSH USING GIT BASH
+================================================================================
+
+I've created a script that will push everything for you!
+
+================================================================================
+                    STEP-BY-STEP INSTRUCTIONS
+================================================================================
+
+STEP 1: Open Git Bash
+────────────────────────────────────────────────────────────────────────────
+
+Option A: Right-click in the Doodle folder
+   1. Open File Explorer
+   2. Go to: c:\Users\zc\Desktop\othr\Doodle
+   3. Right-click in empty space
+   4. Click "Git Bash Here"
+
+Option B: Open from Start Menu
+   1. Press Windows key
+   2. Type "Git Bash"
+   3. Open Git Bash
+   4. Type: cd /c/Users/zc/Desktop/othr/Doodle
+   5. Press Enter
+
+
+STEP 2: Run the Push Script
+────────────────────────────────────────────────────────────────────────────
+
+In the Git Bash window, type:
+
+    bash push-updates.sh
+
+Then press Enter.
+
+
+STEP 3: Enter Your Token
+────────────────────────────────────────────────────────────────────────────
+
+When it asks for password, paste your token:
+
+    github_pat_XXXXX... (your actual token)
+
+(Right-click in Git Bash to paste, or use Shift+Insert)
+
+Press Enter.
+
+
+STEP 4: Wait for Success
+────────────────────────────────────────────────────────────────────────────
+
+You'll see:
+"SUCCESS!"
+"Your updates are on GitHub!"
+
+
+================================================================================
+                    ALTERNATIVE: MANUAL COMMANDS
+================================================================================
+
+If the script doesn't work, type these commands manually in Git Bash:
+
+cd /c/Users/zc/Desktop/othr/Doodle
+
+git add .
+
+git commit -m "Update workflow and fix build"
+
+git push origin main
+
+(Enter your token when asked for password)
+
+
+================================================================================
+                    IF YOU DON'T HAVE GIT BASH
+================================================================================
+
+Install it:
+
+1. Download from: https://git-scm.com/download/win
+
+2. Run the installer (use default options)
+
+3. Git Bash will be available in right-click menu
+
+
+================================================================================
+                    TROUBLESHOOTING
+================================================================================
+
+Problem: "bash: push-updates.sh: command not found"
+Solution: Make sure you're in the Doodle folder
+          Type: pwd
+          Should show: /c/Users/zc/Desktop/othr/Doodle
+
+Problem: "Permission denied"
+Solution: Make script executable
+          Type: chmod +x push-updates.sh
+          Then: bash push-updates.sh
+
+Problem: "Authentication failed"
+Solution: Make sure you're using the token, not your password
+          Token starts with: github_pat_
+
+Problem: "fatal: repository not found"
+Solution: Check if repository exists at:
+          https://github.com/maxin3820-jpg/Doodle
+
+
+================================================================================
+                    WHAT THE SCRIPT DOES
+================================================================================
+
+1. Initializes git (if needed)
+2. Adds all files
+3. Creates a commit
+4. Links to your GitHub repository
+5. Pushes everything to GitHub
+6. Shows success message
+
+
+================================================================================
+                    AFTER PUSHING
+================================================================================
+
+Once push succeeds:
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. You'll see the build running 🟡
+
+3. Wait 5-10 minutes
+
+4. Download APK from Artifacts
+
+5. Install on phone!
+
+
+================================================================================
+
+                    READY? OPEN GIT BASH NOW!
+
+            Right-click in Doodle folder → "Git Bash Here"
+            
+            Then type: bash push-updates.sh
+
+================================================================================

@@ -97,10 +97,10 @@ echo 2. Click "Generate new token (classic)"
 echo 3. Give it a name: "Doodle upload"
 echo 4. Check the "repo" checkbox
 echo 5. Click "Generate token"
-echo 6. Copy the token (starts with ghp_...)
+echo 6. Copy the token (starts with github_pat_...)
 echo 7. Paste it here when asked for password
 echo.
-echo The token looks like: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+echo The token looks like: github_pat_XXXXX...
 echo.
 pause
 

@@ -1,0 +1,231 @@
+================================================================================
+            EASIEST WAY: UPLOAD FILES VIA GITHUB WEB INTERFACE
+                        (No Git, No Command Line!)
+================================================================================
+
+This method works even if you have connection problems with git!
+You just use your web browser.
+
+================================================================================
+                    STEP-BY-STEP INSTRUCTIONS
+================================================================================
+
+STEP 1: Open Your Repository
+────────────────────────────────────────────────────────────────────────────
+
+1. Open your browser
+
+2. Go to: https://github.com/maxin3820-jpg/Doodle
+
+3. Log in if needed
+
+
+STEP 2: Upload Files
+────────────────────────────────────────────────────────────────────────────
+
+1. Look for the "Add file" button (top right, near the green "Code" button)
+
+2. Click "Add file"
+
+3. Click "Upload files"
+
+
+STEP 3: Select All Files
+────────────────────────────────────────────────────────────────────────────
+
+You have two options:
+
+OPTION A: Drag and Drop
+   - Open File Explorer: c:\Users\zc\Desktop\othr\Doodle
+   - Select ALL files and folders (Ctrl+A)
+   - Drag them to the GitHub page
+   - Drop them in the upload area
+
+OPTION B: Browse and Select
+   - Click "choose your files" link
+   - Navigate to: c:\Users\zc\Desktop\othr\Doodle
+   - Select all files and folders (Ctrl+A)
+   - Click "Open"
+
+
+STEP 4: Commit the Upload
+────────────────────────────────────────────────────────────────────────────
+
+1. Scroll down to the bottom
+
+2. You'll see:
+   - "Commit changes"
+   - Text box with: "Add files via upload"
+
+3. Click the green "Commit changes" button
+
+4. Wait for upload to complete (1-2 minutes)
+
+
+STEP 5: GitHub Actions Builds Your APK
+────────────────────────────────────────────────────────────────────────────
+
+After upload completes:
+
+1. GitHub automatically detects the workflow file
+
+2. It starts building your APK
+
+3. Go to: https://github.com/maxin3820-jpg/Doodle/actions
+
+4. Wait for green checkmark (5-10 minutes)
+
+5. Download APK from "Artifacts" section
+
+
+================================================================================
+                    VISUAL GUIDE
+================================================================================
+
+GitHub Page:
+┌─────────────────────────────────────────────────────────────┐
+│  📦 maxin3820-jpg / Doodle                                   │
+│  ──────────────────────────────────────────────────────────│
+│  [Code ▼] [Add file ▼] [<> Code]                           │
+│              ↑↑↑                                            │
+│          CLICK HERE                                         │
+│                                                             │
+│  Then select: "Upload files"                                │
+└─────────────────────────────────────────────────────────────┘
+
+Upload Page:
+┌─────────────────────────────────────────────────────────────┐
+│  Drag files here to add them to your repository             │
+│                                                             │
+│  ┌───────────────────────────────────────────────────┐     │
+│  │                                                   │     │
+│  │        Drag and drop files here                   │     │
+│  │                                                   │     │
+│  │        or choose your files                       │     │
+│  │                                                   │     │
+│  └───────────────────────────────────────────────────┘     │
+│                                                             │
+│  Commit changes                                             │
+│  ┌─────────────────────────────────────────────┐          │
+│  │ Add files via upload                         │          │
+│  └─────────────────────────────────────────────────┘          │
+│                                                             │
+│  [Commit changes]  ← CLICK THIS WHEN DONE                  │
+└─────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                    IMPORTANT NOTES
+================================================================================
+
+✓ This method uploads files directly through your browser
+✓ No git installation needed
+✓ No command line needed
+✓ No connection issues
+✓ Works with slow internet (retries automatically)
+✓ Simple drag and drop
+
+⚠️ Make sure to upload ALL files and folders:
+   - app folder (with all contents)
+   - gradle folder
+   - .github folder (very important for APK building!)
+   - All .bat files
+   - All .md and .txt files
+   - build.gradle.kts
+   - settings.gradle.kts
+   - gradlew
+   - gradlew.bat
+   - All other files
+
+
+================================================================================
+                    WHAT FILES TO UPLOAD
+================================================================================
+
+You need to upload ALL of these:
+
+📁 Folders:
+   - app/
+   - gradle/
+   - .github/
+
+📄 Files:
+   - build.gradle.kts
+   - settings.gradle.kts
+   - gradle.properties
+   - gradlew
+   - gradlew.bat
+   - local.properties
+   - .gitignore
+   - README.md
+   - All other .txt, .md, .bat files
+
+Don't worry if you miss some - you can always upload more files later!
+
+But MUST HAVE:
+✓ app/ folder (entire thing)
+✓ .github/ folder (for automatic APK building)
+✓ build.gradle.kts
+✓ settings.gradle.kts
+✓ gradlew and gradlew.bat
+
+
+================================================================================
+                    AFTER UPLOAD
+================================================================================
+
+Once files are uploaded:
+
+1. Go to Actions tab: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. You should see "Build Android APK" workflow running 🟡
+
+3. Wait 10 minutes for completion ✅
+
+4. Click on the workflow run
+
+5. Download APK from "Artifacts" section
+
+6. Install on phone!
+
+
+================================================================================
+                    ADVANTAGES OF THIS METHOD
+================================================================================
+
+✓ No software installation needed
+✓ Works in any browser
+✓ No connection issues with git
+✓ Visual - you can see what you're uploading
+✓ Automatic retry if upload fails
+✓ Can upload large files
+✓ Can upload multiple times (if you miss something)
+
+
+================================================================================
+                    TROUBLESHOOTING
+================================================================================
+
+Problem: Upload is very slow
+Solution: This is normal if you have slow internet. Just wait.
+
+Problem: "Upload failed" error
+Solution: Try again. Click "Add file" → "Upload files" and retry.
+
+Problem: Can't find some files
+Solution: In File Explorer, enable "Show hidden files":
+   - View → Options → View tab
+   - Check "Show hidden files, folders, and drives"
+   - Now you can see .github folder
+
+Problem: .github folder not uploading
+Solution: This folder might be hidden. Make sure to show hidden files first.
+
+
+================================================================================
+
+                    READY? START UPLOADING!
+
+                https://github.com/maxin3820-jpg/Doodle
+
+================================================================================

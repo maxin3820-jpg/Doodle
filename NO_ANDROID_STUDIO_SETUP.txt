@@ -1,0 +1,390 @@
+================================================================================
+          BUILD DOODLE WITHOUT ANDROID STUDIO - COMPLETE GUIDE
+================================================================================
+
+                            TABLE OF CONTENTS
+                            
+   1. Requirements (What You Need)
+   2. Installation Steps (20 minutes)
+   3. Building the App
+   4. Installing on Your Phone
+   5. Troubleshooting
+   6. Understanding the Build Process
+
+================================================================================
+                      1. REQUIREMENTS (WHAT YOU NEED)
+================================================================================
+
+HARDWARE:
+- Windows PC (Windows 10 or 11)
+- 4GB RAM minimum (8GB recommended)
+- 5GB free disk space
+- Internet connection (for initial setup only)
+
+SOFTWARE TO INSTALL:
+1. Java JDK 17
+2. Android SDK Command Line Tools
+
+OPTIONAL:
+- Android device with USB cable
+- Or ability to transfer files to your phone
+
+================================================================================
+                      2. INSTALLATION STEPS (20 MINUTES)
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP A: INSTALL JAVA JDK 17
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+METHOD 1: Using Windows Package Manager (Easiest)
+
+   1. Open Command Prompt (Win+R, type "cmd", Enter)
+   
+   2. Run this command:
+      
+      winget install EclipseAdoptium.Temurin.17.JDK
+   
+   3. Wait for installation to complete
+   
+   4. Close and reopen Command Prompt
+   
+   5. Verify:
+      
+      java -version
+      
+      Should show: openjdk version "17.x.x"
+
+METHOD 2: Manual Download
+
+   1. Visit: https://adoptium.net/temurin/releases/?version=17
+   
+   2. Download:
+      - Operating System: Windows
+      - Architecture: x64
+      - Package Type: JDK
+      - Format: .msi installer
+   
+   3. Run the downloaded .msi file
+   
+   4. Follow installation wizard (use default settings)
+   
+   5. Restart Command Prompt and verify:
+      
+      java -version
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP B: INSTALL ANDROID SDK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   1. Visit: https://developer.android.com/studio#command-line-tools-only
+   
+   2. Scroll to "Command line tools only"
+   
+   3. Download: commandlinetools-win-XXXXX_latest.zip
+   
+   4. Create folder:
+      
+      C:\Android
+   
+   5. Extract the downloaded zip
+   
+   6. You'll see a folder called "cmdline-tools"
+   
+   7. Create this structure:
+      
+      C:\Android\cmdline-tools\latest\
+   
+   8. Move ALL files from the extracted cmdline-tools folder INTO
+      C:\Android\cmdline-tools\latest\
+      
+      Final structure should be:
+      C:\Android\
+      └── cmdline-tools\
+          └── latest\
+              ├── bin\
+              ├── lib\
+              └── ...
+   
+   9. Set Environment Variables:
+      
+      Open Command Prompt as Administrator and run:
+      
+      setx ANDROID_HOME "C:\Android" /M
+      setx PATH "%PATH%;C:\Android\cmdline-tools\latest\bin;C:\Android\platform-tools" /M
+   
+   10. Close and reopen Command Prompt (important!)
+   
+   11. Install SDK components:
+       
+       cd C:\Android\cmdline-tools\latest\bin
+       
+       sdkmanager --licenses
+       (Type 'y' and press Enter for each license - there are ~6)
+       
+       sdkmanager "platform-tools"
+       sdkmanager "platforms;android-34"
+       sdkmanager "build-tools;34.0.0"
+   
+   12. Wait for downloads to complete (~2-3 GB)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP C: CONFIGURE DOODLE PROJECT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   1. Open Notepad
+   
+   2. Type this line:
+      
+      sdk.dir=C\:\\Android
+   
+   3. Save as: C:\Users\zc\Desktop\othr\Doodle\local.properties
+      (Make sure "Save as type" is "All Files")
+   
+   4. Done!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VERIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   Run the requirements checker:
+   
+   1. Go to: C:\Users\zc\Desktop\othr\Doodle
+   
+   2. Double-click: check-requirements.bat
+   
+   3. Should show all green checkmarks ✓
+
+================================================================================
+                      3. BUILDING THE APP
+================================================================================
+
+NOW THE EASY PART!
+
+   1. Go to: C:\Users\zc\Desktop\othr\Doodle
+   
+   2. Double-click: build.bat
+   
+   3. Wait... (5-10 minutes first time, downloads ~500MB dependencies)
+   
+   4. You'll see "BUILD SUCCESSFUL!" when done
+   
+   5. APK location:
+      app\build\outputs\apk\debug\app-debug.apk
+
+WHAT HAPPENS DURING BUILD:
+
+   ┌─────────────────────────────────────┐
+   │ 1. Gradle wrapper downloads         │ (~100 MB)
+   │ 2. Project dependencies download    │ (~500 MB)
+   │ 3. Kotlin compiler runs             │
+   │ 4. Code compiles                    │
+   │ 5. Resources process                │
+   │ 6. DEX conversion                   │
+   │ 7. APK packaging                    │
+   │ 8. APK signing (debug key)          │
+   └─────────────────────────────────────┘
+   
+   Total time: 5-10 minutes (first time)
+   Next builds: ~30 seconds
+
+================================================================================
+                      4. INSTALLING ON YOUR PHONE
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION A: AUTOMATIC (Using USB Cable)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   ENABLE USB DEBUGGING ON YOUR PHONE:
+   
+   1. Open Settings on your phone
+   2. Go to "About Phone"
+   3. Tap "Build Number" 7 times
+      (You'll see "You are now a developer!")
+   4. Go back to Settings
+   5. Find "Developer Options" (might be under System)
+   6. Enable "USB Debugging"
+   7. Connect phone to PC via USB cable
+   8. Allow USB debugging when prompted on phone
+   
+   INSTALL:
+   
+   1. Double-click: install.bat
+   2. Wait a few seconds
+   3. You'll see "Installation successful!"
+   4. Find Doodle app on your phone
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION B: MANUAL (No USB Cable Needed)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   1. Copy app-debug.apk from:
+      C:\Users\zc\Desktop\othr\Doodle\app\build\outputs\apk\debug\
+      
+   2. Transfer to your phone using:
+      - Email attachment
+      - Cloud storage (Google Drive, Dropbox)
+      - Bluetooth
+      - USB cable (just copy file)
+      - Messaging app
+   
+   3. On your phone:
+      - Open file manager
+      - Find the app-debug.apk file
+      - Tap it
+      - If prompted, allow "Install unknown apps"
+      - Tap "Install"
+      - Tap "Open" when done
+
+================================================================================
+                      5. TROUBLESHOOTING
+================================================================================
+
+PROBLEM: "java is not recognized as an internal or external command"
+
+SOLUTION:
+   1. Restart Command Prompt
+   2. If still not working, check if Java is installed:
+      - Look for: C:\Program Files\Eclipse Adoptium\jdk-17.x.x
+   3. Set JAVA_HOME manually:
+      setx JAVA_HOME "C:\Program Files\Eclipse Adoptium\jdk-17.x.x" /M
+   4. Add to PATH:
+      setx PATH "%PATH%;%JAVA_HOME%\bin" /M
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM: "SDK location not found"
+
+SOLUTION:
+   1. Check if C:\Android exists
+   2. Edit local.properties in Doodle folder
+   3. Add this line: sdk.dir=C\:\\Android
+   4. Important: Use double backslashes \\
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM: Build fails with "Failed to find Build Tools revision 34.0.0"
+
+SOLUTION:
+   sdkmanager "build-tools;34.0.0"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM: Build is very slow or hangs
+
+SOLUTION:
+   1. Check internet connection
+   2. First build downloads ~500MB - wait patiently
+   3. If stuck >30 minutes:
+      - Run: clean.bat
+      - Then: build.bat again
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM: Can't install APK on phone - "Unknown sources blocked"
+
+SOLUTION:
+   1. Settings → Security
+   2. Enable "Unknown sources"
+   OR for newer Android:
+   1. Try to install APK
+   2. When prompted, tap "Settings"
+   3. Enable "Allow from this source"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM: App crashes immediately when opened
+
+SOLUTION:
+   1. Phone must be Android 8.0 (API 26) or higher
+   2. Check phone Android version: Settings → About Phone
+   3. If older than Android 8.0, app won't work
+
+================================================================================
+                      6. UNDERSTANDING THE BUILD PROCESS
+================================================================================
+
+FOLDER STRUCTURE:
+
+   Doodle/
+   ├── app/                         → Main application module
+   │   ├── src/
+   │   │   ├── main/
+   │   │   │   ├── java/           → Kotlin source code
+   │   │   │   ├── res/            → Resources (images, strings, layouts)
+   │   │   │   └── AndroidManifest.xml
+   │   │   ├── test/               → Unit tests
+   │   │   └── androidTest/        → Instrumentation tests
+   │   ├── build.gradle.kts        → App build configuration
+   │   └── build/                  → Build outputs (generated)
+   │       └── outputs/apk/debug/  → Your APK is here!
+   ├── gradle/                     → Gradle wrapper files
+   ├── build.gradle.kts            → Project build configuration
+   ├── settings.gradle.kts         → Project settings
+   ├── local.properties            → SDK location (you create this)
+   └── gradlew.bat                 → Gradle wrapper script
+
+WHAT IS GRADLE?
+   - Build automation tool
+   - Downloads dependencies
+   - Compiles code
+   - Packages APK
+   - Think of it as "make" for Android
+
+WHAT IS AN APK?
+   - Android Package Kit
+   - Like .exe for Windows but for Android
+   - Contains compiled code + resources
+   - Can be installed on any Android device
+
+DEBUG vs RELEASE APK:
+   - Debug: For testing, signed with debug key
+   - Release: For Google Play, needs proper signing
+
+================================================================================
+                      ADDITIONAL COMMANDS
+================================================================================
+
+Run Tests:
+   test.bat
+
+Clean Build (if something goes wrong):
+   clean.bat
+   
+Build Release Version:
+   gradlew.bat assembleRelease
+   (Requires proper app signing - see BUILD_WITHOUT_ANDROID_STUDIO.md)
+
+Check Code for Errors:
+   gradlew.bat lint
+
+View All Tasks:
+   gradlew.bat tasks
+
+================================================================================
+                      WHAT'S NEXT?
+================================================================================
+
+✓ You've built your first Android app without Android Studio!
+✓ App is installed and running on your phone
+✓ You can modify the source code and rebuild
+
+TO MODIFY THE APP:
+   1. Edit Kotlin files in: app/src/main/java/com/doodle/app/
+   2. Run: build.bat
+   3. Run: install.bat
+   4. Test your changes!
+
+LEARN MORE:
+   - Kotlin: https://kotlinlang.org/docs/home.html
+   - Jetpack Compose: https://developer.android.com/jetpack/compose
+   - Android Dev: https://developer.android.com/
+
+================================================================================
+
+Congratulations! You've successfully built Doodle! 🎉
+
+For questions or issues, check the documentation files or the source code.
+
+================================================================================

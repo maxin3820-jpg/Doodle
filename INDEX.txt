@@ -1,0 +1,262 @@
+================================================================================
+                    DOODLE PROJECT - FILE INDEX
+================================================================================
+
+NEW TO THE PROJECT? START HERE:
+   └─> START_HERE.txt (Main entry point - READ THIS FIRST!)
+
+================================================================================
+                    QUICK REFERENCE GUIDE
+================================================================================
+
+WANT TO...                          OPEN THIS FILE:
+────────────────────────────────────────────────────────────────────────────
+Build the app                       → build.bat
+Check if ready to build             → check-requirements.bat  
+Install on phone                    → install.bat
+Run tests                           → test.bat
+Clean build files                   → clean.bat
+Interactive setup                   → setup.bat
+
+Learn quick setup (15 min)          → QUICK_START.md
+Complete build guide                → NO_ANDROID_STUDIO_SETUP.txt
+Detailed build instructions         → BUILD_WITHOUT_ANDROID_STUDIO.md
+Understand the project              → PROJECT_SUMMARY.md
+See app features                    → README.md
+Android Studio setup (optional)     → SETUP_GUIDE.md
+
+================================================================================
+                    FILE ORGANIZATION
+================================================================================
+
+📁 ROOT DIRECTORY FILES
+────────────────────────────────────────────────────────────────────────────
+START_HERE.txt                      Main entry point - start here!
+INDEX.txt                           This file - quick navigation
+README.md                           Project overview & features
+PROJECT_SUMMARY.md                  Complete project details
+QUICK_START.md                      15-minute setup guide
+NO_ANDROID_STUDIO_SETUP.txt         Complete non-Studio guide
+BUILD_WITHOUT_ANDROID_STUDIO.md     Detailed build guide
+SETUP_GUIDE.md                      Android Studio guide (optional)
+
+📜 BUILD SCRIPTS
+────────────────────────────────────────────────────────────────────────────
+build.bat                           Build the APK (main script)
+install.bat                         Install APK to device
+test.bat                            Run unit tests
+clean.bat                           Clean build artifacts
+setup.bat                           Interactive setup assistant
+check-requirements.bat              Verify build environment
+
+📝 CONFIGURATION FILES
+────────────────────────────────────────────────────────────────────────────
+local.properties                    Android SDK location
+build.gradle.kts                    Project build config
+settings.gradle.kts                 Project settings
+gradle.properties                   Gradle properties
+.gitignore                          Git ignore rules
+
+📱 APP DIRECTORY (app/)
+────────────────────────────────────────────────────────────────────────────
+app/build.gradle.kts                App module build config
+app/proguard-rules.pro              ProGuard rules
+
+app/src/main/
+├── AndroidManifest.xml             App manifest
+├── java/com/doodle/app/
+│   ├── MainActivity.kt             Main activity
+│   ├── DoodleApplication.kt        App class
+│   ├── data/                       Data layer
+│   │   ├── database/               Room database
+│   │   ├── model/                  Data models
+│   │   ├── repository/             Repositories
+│   │   └── settings/               Settings (DataStore)
+│   ├── di/                         Dependency injection
+│   ├── ui/                         UI layer
+│   │   ├── components/             Reusable components
+│   │   ├── navigation/             Navigation
+│   │   ├── screens/                Screens
+│   │   ├── theme/                  Theming
+│   │   └── viewmodel/              ViewModels
+└── res/                            Resources
+    ├── values/                     Strings, themes, colors
+    ├── mipmap-*/                   Launcher icons
+    └── drawable/                   Vector drawables
+
+app/src/test/                       Unit tests
+app/src/androidTest/                Instrumentation tests
+
+app/build/outputs/apk/debug/        
+└── app-debug.apk                   YOUR BUILT APK HERE!
+
+================================================================================
+                    WORKFLOW GUIDE
+================================================================================
+
+FIRST TIME SETUP:
+   1. Read START_HERE.txt
+   2. Run check-requirements.bat
+   3. If fails, follow QUICK_START.md
+   4. Run build.bat
+   5. Run install.bat (or copy APK manually)
+
+DEVELOPMENT WORKFLOW:
+   1. Edit code in app/src/main/java/
+   2. Run build.bat
+   3. Run install.bat
+   4. Test changes on device
+   5. Repeat
+
+TROUBLESHOOTING:
+   1. Check START_HERE.txt section on troubleshooting
+   2. See NO_ANDROID_STUDIO_SETUP.txt section 5
+   3. Try clean.bat then build.bat again
+
+================================================================================
+                    KEY FILES TO KNOW
+================================================================================
+
+MUST READ (Pick one based on your situation):
+────────────────────────────────────────────────────────────────────────────
+START_HERE.txt                      If you're completely new
+QUICK_START.md                      If you want fast setup
+NO_ANDROID_STUDIO_SETUP.txt         If you want detailed guide
+PROJECT_SUMMARY.md                  If you want project overview
+
+MUST RUN:
+────────────────────────────────────────────────────────────────────────────
+check-requirements.bat              Before building (verify setup)
+build.bat                           To build the APK
+install.bat                         To install on device
+
+IMPORTANT SOURCE FILES:
+────────────────────────────────────────────────────────────────────────────
+MainActivity.kt                     App entry point
+TasksScreen.kt                      Main tasks screen
+TasksViewModel.kt                   Tasks logic
+TaskRepository.kt                   Data operations
+AppDatabase.kt                      Database definition
+AppSettings.kt                      Settings management
+
+================================================================================
+                    DEPENDENCY DIAGRAM
+================================================================================
+
+                        build.bat
+                            │
+                            ├─> Requires: Java JDK 17
+                            ├─> Requires: Android SDK
+                            ├─> Reads: local.properties
+                            ├─> Uses: gradlew.bat
+                            └─> Outputs: app-debug.apk
+                                    │
+                                    └─> install.bat
+                                            │
+                                            └─> Installs on phone
+
+================================================================================
+                    DOCUMENTATION DECISION TREE
+================================================================================
+
+Question: Do you have Java and Android SDK installed?
+├─ NO  → Read: QUICK_START.md
+│        Follow step-by-step to install
+│        Then: run setup.bat
+│
+└─ YES → Run: check-requirements.bat
+         ├─ PASS → Run: build.bat
+         │         └─> SUCCESS → Run: install.bat
+         │
+         └─ FAIL → Check specific error:
+                   ├─ Java issue → See QUICK_START.md Step A
+                   ├─ SDK issue  → See QUICK_START.md Step B
+                   └─ Other      → See NO_ANDROID_STUDIO_SETUP.txt
+
+================================================================================
+                    FILE SIZES REFERENCE
+================================================================================
+
+DOCUMENTATION:          ~500 KB total
+   START_HERE.txt              ~15 KB
+   NO_ANDROID_STUDIO_SETUP     ~30 KB
+   QUICK_START.md              ~12 KB
+   PROJECT_SUMMARY.md          ~20 KB
+   BUILD_WITHOUT_ANDROID_STUDIO ~25 KB
+
+SOURCE CODE:            ~2,500 lines
+   Kotlin files                ~2,000 lines
+   XML resources               ~300 lines
+   Gradle configs              ~200 lines
+
+BUILD OUTPUT:
+   Debug APK                   ~5-8 MB
+   Release APK                 ~3-5 MB
+
+DOWNLOADS (First Build):
+   Gradle dependencies         ~500 MB
+   Total disk space            ~4-5 GB
+
+================================================================================
+                    QUICK COMMAND REFERENCE
+================================================================================
+
+BUILD COMMANDS:
+   build.bat                        Build debug APK
+   gradlew.bat assembleRelease      Build release APK
+   gradlew.bat clean                Clean build
+   gradlew.bat test                 Run tests
+
+DEVICE COMMANDS:
+   adb devices                      List connected devices
+   adb install <apk>                Install APK
+   adb uninstall com.doodle.app     Uninstall app
+   adb logcat                       View device logs
+
+PROJECT COMMANDS:
+   gradlew.bat tasks                List all tasks
+   gradlew.bat dependencies         Show dependencies
+   gradlew.bat lint                 Check code quality
+
+================================================================================
+                    HELPFUL TIPS
+================================================================================
+
+✓ Always start with START_HERE.txt
+✓ Run check-requirements.bat before building
+✓ First build takes 5-10 minutes (downloads dependencies)
+✓ Use clean.bat if build fails
+✓ Keep local.properties configured
+✓ Check phone has Android 8.0+ (API 26+)
+✓ Enable USB debugging for adb install
+✓ Subsequent builds are ~30 seconds
+
+================================================================================
+                    SUPPORT & RESOURCES
+================================================================================
+
+STUCK?
+   1. Check START_HERE.txt troubleshooting section
+   2. Read NO_ANDROID_STUDIO_SETUP.txt section 5
+   3. Try clean.bat then build.bat
+   4. Verify all requirements with check-requirements.bat
+
+WANT TO LEARN MORE?
+   - Android Developer: https://developer.android.com
+   - Kotlin: https://kotlinlang.org
+   - Jetpack Compose: https://developer.android.com/jetpack/compose
+   - Gradle: https://docs.gradle.org
+
+WANT TO MODIFY CODE?
+   - Check PROJECT_SUMMARY.md for architecture
+   - Read README.md for features
+   - Explore app/src/main/java/com/doodle/app/
+   - Comments are throughout the code
+
+================================================================================
+
+                    🚀 READY TO START? 🚀
+                    
+                Open: START_HERE.txt
+                
+================================================================================

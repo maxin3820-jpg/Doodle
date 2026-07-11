@@ -1,0 +1,157 @@
+================================================================================
+                        DOODLE - START HERE
+================================================================================
+
+Welcome! You've created a complete Android app called "Doodle" - a minimalist
+task manager. Here's the EASIEST way to get your APK file!
+
+================================================================================
+                   🎯 RECOMMENDED: EASIEST METHOD
+================================================================================
+
+Get your APK WITHOUT installing Java or Android SDK!
+GitHub builds it for you in the cloud (100% FREE!)
+
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                   │
+│                   📖 OPEN THIS FILE NEXT:                        │
+│                                                                   │
+│                    GET_APK_EASY.txt                              │
+│                                                                   │
+│         Follow 6 simple steps → Get APK in 15 minutes!           │
+│                                                                   │
+└─────────────────────────────────────────────────────────────────┘
+
+WHAT YOU'LL DO:
+1. Install Git (1 command)
+2. Create GitHub account
+3. Create repository
+4. Run UPLOAD_TO_GITHUB.bat
+5. Wait 10 minutes (GitHub builds APK)
+6. Download & install APK
+
+TOTAL TIME: 15-20 minutes
+YOUR EFFORT: Just upload code, then wait
+DOWNLOADS: ~100 MB (Git only)
+
+================================================================================
+                   🔧 ALTERNATIVE: BUILD LOCALLY  
+================================================================================
+
+Prefer to build on your own computer?
+
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                   │
+│    1. Read: QUICK_START.md (Setup Java + Android SDK)           │
+│    2. Run: check-requirements.bat                                │
+│    3. Run: build.bat                                             │
+│    4. Run: install.bat                                           │
+│                                                                   │
+└─────────────────────────────────────────────────────────────────┘
+
+TOTAL TIME: 20-30 minutes (first time)
+YOUR EFFORT: Install tools, then build
+DOWNLOADS: ~4-5 GB (Java + Android SDK)
+
+================================================================================
+                        AVAILABLE SCRIPTS
+================================================================================
+
+check-requirements.bat  →  Check if ready to build
+setup.bat              →  Interactive setup assistant  
+build.bat              →  Build the APK (main script)
+install.bat            →  Install APK to connected phone
+test.bat               →  Run unit tests
+clean.bat              →  Clean build artifacts
+
+================================================================================
+                        DOCUMENTATION
+================================================================================
+
+QUICK_START.md                      →  Step-by-step setup (15 min)
+BUILD_WITHOUT_ANDROID_STUDIO.md    →  Detailed build guide
+README.md                           →  App features & architecture
+SETUP_GUIDE.md                      →  Original guide (for Android Studio)
+
+================================================================================
+                        INSTALLATION OPTIONS
+================================================================================
+
+OPTION A: Using ADB (automatic)
+   1. Enable USB Debugging on your phone
+   2. Connect phone via USB
+   3. Run: install.bat
+
+OPTION B: Manual (simple)
+   1. Copy app-debug.apk to your phone
+   2. Open it on your phone
+   3. Tap Install (allow unknown sources if asked)
+
+================================================================================
+                        FIRST BUILD NOTES
+================================================================================
+
+• First build takes 5-10 minutes (downloads dependencies ~500MB)
+• Requires stable internet connection
+• Subsequent builds: ~30 seconds
+• Total disk space needed: ~4GB (SDK + dependencies)
+
+================================================================================
+                        TROUBLESHOOTING
+================================================================================
+
+"Java is not recognized"
+   → Restart command prompt after installing Java
+   → Or set JAVA_HOME: setx JAVA_HOME "C:\Program Files\Eclipse Adoptium\..."
+
+"SDK location not found"  
+   → Edit local.properties, add: sdk.dir=C\:\\Android
+
+"Build failed"
+   → Run: clean.bat
+   → Then: build.bat
+
+More help in: BUILD_WITHOUT_ANDROID_STUDIO.md
+
+================================================================================
+                        WHAT IS DOODLE?
+================================================================================
+
+Doodle is a minimalist task manager with:
+✓ Extremely fast (no splash screen, no loading)
+✓ Offline-first (works without internet)
+✓ Auto-save (never lose data)
+✓ Customizable (themes, colors, fonts)
+✓ No ads, no login, no cloud sync
+✓ Material 3 Design (modern UI)
+✓ Smooth animations (200-300ms)
+
+Technology:
+• Language: Kotlin
+• UI: Jetpack Compose (Material 3)
+• Architecture: MVVM
+• Database: Room (SQLite)
+• DI: Hilt
+• Min SDK: Android 8.0 (API 26)
+
+================================================================================
+                        GETTING HELP
+================================================================================
+
+Questions? Check the documentation:
+1. QUICK_START.md - For setup issues
+2. BUILD_WITHOUT_ANDROID_STUDIO.md - For build issues
+3. README.md - For app features
+
+Project structure:
+app/src/main/java/com/doodle/app/
+├── data/          → Database, Repository, Settings
+├── ui/            → Screens, Components, Theme
+├── di/            → Dependency Injection
+└── MainActivity   → App entry point
+
+================================================================================
+
+Ready? Run: check-requirements.bat
+
+================================================================================

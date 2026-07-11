@@ -1,0 +1,227 @@
+================================================================================
+                    YOUR APK IS BEING BUILT RIGHT NOW!
+                        (or already ready!)
+================================================================================
+
+Your GitHub repository: https://github.com/maxin3820-jpg/Doodle.git
+
+GitHub Actions is automatically building your APK in the cloud!
+
+================================================================================
+                    HOW TO DOWNLOAD YOUR APK
+================================================================================
+
+STEP 1: Go to Your Repository
+────────────────────────────────────────────────────────────────────────────
+
+Open this link in your browser:
+
+    https://github.com/maxin3820-jpg/Doodle
+
+
+STEP 2: Click on "Actions" Tab
+────────────────────────────────────────────────────────────────────────────
+
+At the top of the page, you'll see:
+
+    Code | Issues | Pull requests | Actions | Projects | Settings
+                                      ↑
+                                  CLICK HERE!
+
+
+STEP 3: Check Build Status
+────────────────────────────────────────────────────────────────────────────
+
+You'll see workflow runs. Look for the status:
+
+    🟡 Yellow circle = Building right now (wait 5-10 minutes)
+    ✅ Green checkmark = Build successful! (Ready to download)
+    ❌ Red X = Build failed (see troubleshooting below)
+
+
+STEP 4: Download the APK
+────────────────────────────────────────────────────────────────────────────
+
+If you see a green checkmark ✅:
+
+1. Click on the workflow run name
+   (Usually says something like "Update README.md" or your commit message)
+
+2. Scroll down to the bottom of the page
+
+3. Look for the "Artifacts" section
+
+4. Click on "doodle-debug-apk" to download
+
+5. A ZIP file will download to your computer
+
+
+STEP 5: Extract and Install
+────────────────────────────────────────────────────────────────────────────
+
+1. Find the downloaded ZIP file (usually in Downloads folder)
+
+2. Right-click → Extract All
+
+3. Inside you'll find: app-debug.apk
+
+4. Copy this file to your phone (USB, email, cloud, etc.)
+
+5. On your phone:
+   - Open the APK file
+   - Allow "Install unknown apps" if prompted
+   - Tap "Install"
+   - Done! 🎉
+
+
+================================================================================
+                    DIRECT LINKS
+================================================================================
+
+Your Repository:
+https://github.com/maxin3820-jpg/Doodle
+
+Actions Page (where you download APK):
+https://github.com/maxin3820-jpg/Doodle/actions
+
+Latest Workflow Run:
+https://github.com/maxin3820-jpg/Doodle/actions/workflows/build-apk.yml
+
+
+================================================================================
+                    TROUBLESHOOTING
+================================================================================
+
+Problem: I don't see the "Actions" tab
+────────────────────────────────────────────────────────────────────────────
+Solution: 
+- Make sure you're logged in to GitHub
+- Refresh the page
+- Actions should be enabled by default
+
+
+Problem: Build shows red X (failed)
+────────────────────────────────────────────────────────────────────────────
+Solution:
+1. Click on the failed run
+2. Check the error logs
+3. Most common issue: gradlew file permissions
+4. The workflow should auto-fix this (chmod +x gradlew)
+
+
+Problem: I don't see any workflow runs
+────────────────────────────────────────────────────────────────────────────
+Solution:
+- Make sure .github/workflows/build-apk.yml was uploaded
+- Try pushing a new commit:
+  
+  cd c:\Users\zc\Desktop\othr\Doodle
+  git add .
+  git commit -m "Trigger build"
+  git push
+
+
+Problem: No "Artifacts" section
+────────────────────────────────────────────────────────────────────────────
+Solution:
+- Wait for build to complete (green checkmark)
+- Refresh the page
+- Build must be successful to have artifacts
+
+
+Problem: Can't install APK on phone
+────────────────────────────────────────────────────────────────────────────
+Solution:
+- Go to Settings → Security
+- Enable "Unknown sources" or "Install unknown apps"
+- Try again
+
+
+================================================================================
+                    WHAT'S HAPPENING RIGHT NOW
+================================================================================
+
+When you pushed your code to GitHub, it automatically triggered the workflow:
+
+[Current Step] GitHub Actions is:
+   1. ✓ Setting up virtual machine (Ubuntu)
+   2. ✓ Installing Java JDK 17
+   3. ✓ Installing Android SDK
+   4. ⏳ Downloading dependencies (~500 MB)
+   5. ⏳ Compiling your Kotlin code
+   6. ⏳ Processing resources
+   7. ⏳ Building APK
+   8. ⏳ Uploading artifact
+
+This takes 5-10 minutes on first build.
+
+You can watch it live at:
+https://github.com/maxin3820-jpg/Doodle/actions
+
+
+================================================================================
+                    EXPECTED FILE SIZE
+================================================================================
+
+The downloaded ZIP will be ~5-6 MB
+After extraction, app-debug.apk will be ~5-8 MB
+
+This is normal for a debug APK!
+
+
+================================================================================
+                    NEXT TIME
+================================================================================
+
+After you've downloaded your first APK, making changes is easy:
+
+1. Edit your code in: app/src/main/java/com/doodle/app/
+
+2. Commit and push:
+   git add .
+   git commit -m "Added new feature"
+   git push
+
+3. GitHub automatically builds new APK!
+
+4. Download from Actions tab again
+
+
+================================================================================
+                    ALTERNATIVE: Manual Trigger
+================================================================================
+
+You can also manually trigger a build:
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle/actions
+2. Click "Build Android APK" workflow
+3. Click "Run workflow" button (top right)
+4. Click green "Run workflow" button
+5. Wait for build to complete
+6. Download from Artifacts
+
+
+================================================================================
+                    QUICK CHECKLIST
+================================================================================
+
+✓ Code uploaded to GitHub
+✓ Repository URL: https://github.com/maxin3820-jpg/Doodle
+✓ Workflow file (.github/workflows/build-apk.yml) included
+✓ GitHub Actions should be building now
+
+Next:
+□ Go to Actions tab
+□ Wait for green checkmark
+□ Download APK from Artifacts
+□ Install on phone
+□ Enjoy! 🎉
+
+
+================================================================================
+
+                    GO CHECK YOUR BUILD STATUS NOW!
+                    
+            https://github.com/maxin3820-jpg/Doodle/actions
+
+================================================================================

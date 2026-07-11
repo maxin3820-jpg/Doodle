@@ -1,0 +1,223 @@
+================================================================================
+                    UPLOAD YOUR CODE - SUPER QUICK!
+================================================================================
+
+Your GitHub repository is already created:
+https://github.com/maxin3820-jpg/Doodle.git
+
+I've created a script with your details already filled in!
+
+================================================================================
+                    STEP-BY-STEP INSTRUCTIONS
+================================================================================
+
+STEP 1: Install Git (if not installed)
+────────────────────────────────────────────────────────────────────────────
+
+Open Command Prompt and run:
+
+    winget install Git.Git
+
+After installation, close and reopen Command Prompt.
+
+
+STEP 2: Get Your GitHub Personal Access Token
+────────────────────────────────────────────────────────────────────────────
+
+You MUST have a token to upload (GitHub doesn't accept passwords anymore)
+
+1. Go to: https://github.com/settings/tokens
+
+2. Click "Generate new token (classic)"
+
+3. Fill in:
+   - Note: "Doodle upload"
+   - Expiration: Choose "90 days" or "No expiration"
+   - Check ONLY the "repo" checkbox
+
+4. Click "Generate token" (green button at bottom)
+
+5. IMPORTANT: Copy the token NOW!
+   It looks like: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   
+   You won't be able to see it again!
+
+6. Save it somewhere (Notepad, text file, etc.)
+
+
+STEP 3: Run the Upload Script
+────────────────────────────────────────────────────────────────────────────
+
+Simply double-click this file:
+
+    📁 UPLOAD_NOW.bat
+
+The script will:
+✓ Initialize git
+✓ Add all your files
+✓ Create a commit
+✓ Link to your GitHub repository
+✓ Push everything to GitHub
+
+When it asks for password:
+→ Paste your Personal Access Token (NOT your GitHub password)
+→ Press Enter
+
+
+STEP 4: Wait for Upload
+────────────────────────────────────────────────────────────────────────────
+
+The upload should take 1-2 minutes depending on internet speed.
+
+You'll see:
+"SUCCESS! CODE IS ON GITHUB!"
+
+
+STEP 5: Download Your APK
+────────────────────────────────────────────────────────────────────────────
+
+Once uploaded, GitHub automatically builds your APK!
+
+1. Go to: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. Wait for green checkmark ✅ (5-10 minutes)
+
+3. Click on the workflow run
+
+4. Scroll down to "Artifacts"
+
+5. Click "doodle-debug-apk" to download
+
+
+================================================================================
+                    VISUAL GUIDE
+================================================================================
+
+Your Computer                          GitHub
+     │                                    │
+     │  1. Double-click UPLOAD_NOW.bat    │
+     │  2. Enter token when asked         │
+     │  3. Wait 1-2 minutes               │
+     ├────────────────────────────────────>│
+     │            Upload                  │
+     │                                    │
+     │                              4. Trigger
+     │                           GitHub Actions
+     │                                    │
+     │                              5. Build APK
+     │                              (10 minutes)
+     │                                    │
+     │  6. Download APK                   │
+     │<───────────────────────────────────┤
+     │          from Actions              │
+     │                                    │
+     ▼                                    ▼
+ Install on Phone                     Done!
+
+
+================================================================================
+                    IMPORTANT NOTES
+================================================================================
+
+⚠️ About Passwords:
+   GitHub NO LONGER accepts passwords for git push.
+   You MUST use a Personal Access Token.
+
+⚠️ Token Security:
+   - Treat it like a password
+   - Don't share it publicly
+   - Don't commit it to your code
+
+⚠️ Token Expiration:
+   - If your token expires, generate a new one
+   - Use the same steps above
+
+⚠️ Repository Name:
+   - Already set to: Doodle
+   - Already linked to: https://github.com/maxin3820-jpg/Doodle.git
+   - No need to change anything!
+
+
+================================================================================
+                    TROUBLESHOOTING
+================================================================================
+
+Problem: "git is not recognized"
+Solution: Install Git and restart Command Prompt
+          winget install Git.Git
+
+Problem: "Permission denied (publickey)"
+Solution: The script uses HTTPS (not SSH), so this shouldn't happen
+          Make sure you're using the token, not password
+
+Problem: "Authentication failed"
+Solution: 
+   - Make sure you're using the Personal Access Token
+   - NOT your GitHub password
+   - Token must have "repo" scope checked
+   - Get new token from: https://github.com/settings/tokens
+
+Problem: "Remote repository already exists"
+Solution: This is fine! The script handles this automatically
+
+Problem: "Nothing to commit"
+Solution: All files are already committed. You're good!
+          You can proceed to check Actions for your APK
+
+
+================================================================================
+                    AFTER SUCCESSFUL UPLOAD
+================================================================================
+
+You'll see in Command Prompt:
+
+    ========================================
+        SUCCESS! CODE IS ON GITHUB!
+    ========================================
+    
+    Your code is now at:
+    https://github.com/maxin3820-jpg/Doodle
+    
+    GitHub Actions is building your APK right now!
+
+Then:
+
+1. Open: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. You'll see "Build Android APK" workflow running 🟡
+
+3. Wait 10 minutes for green checkmark ✅
+
+4. Download APK from "Artifacts" section
+
+5. Install on your phone!
+
+
+================================================================================
+                    QUICK REFERENCE
+================================================================================
+
+Your Repository:
+https://github.com/maxin3820-jpg/Doodle
+
+Get Token:
+https://github.com/settings/tokens
+
+Check Build Status:
+https://github.com/maxin3820-jpg/Doodle/actions
+
+Upload Script:
+📁 UPLOAD_NOW.bat (double-click this!)
+
+
+================================================================================
+
+                    READY? FOLLOW THESE STEPS:
+
+    1. Get token from: https://github.com/settings/tokens
+    2. Double-click: UPLOAD_NOW.bat
+    3. Paste token when asked
+    4. Wait for success message
+    5. Go to Actions tab to download APK
+
+================================================================================

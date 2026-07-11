@@ -1,0 +1,264 @@
+================================================================================
+                    VISUAL GUIDE TO DOWNLOAD YOUR APK
+================================================================================
+
+Your Repository: https://github.com/maxin3820-jpg/Doodle
+
+================================================================================
+
+STEP 1: Open Your Repository
+────────────────────────────────────────────────────────────────────────────
+
+    Browser Address Bar:
+    ┌─────────────────────────────────────────────────────────────┐
+    │ https://github.com/maxin3820-jpg/Doodle                     │
+    └─────────────────────────────────────────────────────────────┘
+
+    Press Enter ↵
+
+
+STEP 2: Find the Actions Tab
+────────────────────────────────────────────────────────────────────────────
+
+    GitHub Page Top Menu:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  📦 Doodle                                                   │
+    │  maxin3820-jpg / Doodle                                      │
+    │                                                              │
+    │  [Code] [Issues] [Pull requests] [Actions] [Settings]       │
+    │                                        ↑↑↑                   │
+    │                                   CLICK HERE                 │
+    └─────────────────────────────────────────────────────────────┘
+
+
+STEP 3: View Workflow Runs
+────────────────────────────────────────────────────────────────────────────
+
+    Actions Page:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  All workflows                                               │
+    │                                                              │
+    │  Build Android APK                                           │
+    │  ✅ Initial commit - Doodle task manager    5 minutes ago   │
+    │      ↑↑↑                                                     │
+    │  CLICK ON THIS                                               │
+    │                                                              │
+    │  Status symbols:                                             │
+    │  🟡 = Building (wait)                                        │
+    │  ✅ = Success (ready!)                                       │
+    │  ❌ = Failed (error)                                         │
+    └─────────────────────────────────────────────────────────────┘
+
+
+STEP 4: Scroll to Artifacts
+────────────────────────────────────────────────────────────────────────────
+
+    Workflow Run Page (scroll down):
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Build Android APK  #1                                       │
+    │  ✅ Completed                                                │
+    │                                                              │
+    │  [Summary] [Jobs]                                            │
+    │                                                              │
+    │  Jobs:                                                       │
+    │  ✅ build                                                     │
+    │                                                              │
+    │  ... (scroll down) ...                                       │
+    │                                                              │
+    │  Artifacts                      ← SCROLL TO HERE             │
+    │  ┌────────────────────────────────────────┐                 │
+    │  │ 📦 doodle-debug-apk        5.2 MB      │                 │
+    │  │    Expires in 90 days                  │                 │
+    │  └────────────────────────────────────────┘                 │
+    │        ↑↑↑                                                   │
+    │    CLICK HERE TO DOWNLOAD                                    │
+    └─────────────────────────────────────────────────────────────┘
+
+
+STEP 5: Extract Downloaded File
+────────────────────────────────────────────────────────────────────────────
+
+    Your Downloads Folder:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  📁 Downloads                                                │
+    │  ├── 📦 doodle-debug-apk.zip        (5.2 MB)                │
+    │                  ↑↑↑                                         │
+    │         RIGHT-CLICK THIS                                     │
+    │         Select "Extract All..."                              │
+    │                                                              │
+    │  After extraction:                                           │
+    │  ├── 📁 doodle-debug-apk                                     │
+    │  │   └── 📱 app-debug.apk          (5.8 MB)                 │
+    │                  ↑↑↑                                         │
+    │            THIS IS YOUR APK!                                 │
+    └─────────────────────────────────────────────────────────────┘
+
+
+STEP 6: Transfer to Phone
+────────────────────────────────────────────────────────────────────────────
+
+    Option A: USB Cable
+    ┌─────────────────────────────────────────────────────────────┐
+    │  1. Connect phone via USB                                    │
+    │  2. Open phone in File Explorer                              │
+    │  3. Copy app-debug.apk to phone's Download folder            │
+    │  4. On phone: Open Files app → Downloads                     │
+    │  5. Tap app-debug.apk                                        │
+    └─────────────────────────────────────────────────────────────┘
+
+    Option B: Email/Cloud
+    ┌─────────────────────────────────────────────────────────────┐
+    │  1. Email the APK to yourself                                │
+    │     OR                                                       │
+    │     Upload to Google Drive / Dropbox                         │
+    │  2. Open email/cloud on phone                                │
+    │  3. Download the APK                                         │
+    │  4. Tap to install                                           │
+    └─────────────────────────────────────────────────────────────┘
+
+
+STEP 7: Install on Phone
+────────────────────────────────────────────────────────────────────────────
+
+    Phone Screen:
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                              │
+    │             Do you want to install this app?                 │
+    │                                                              │
+    │                    📱 Doodle                                 │
+    │                                                              │
+    │              [Settings]  [Cancel]  [Install]                │
+    │                                        ↑↑↑                   │
+    │                                    TAP HERE                  │
+    │                                                              │
+    │  If you see "For your security, your phone is not allowed   │
+    │  to install unknown apps":                                   │
+    │                                                              │
+    │  1. Tap "Settings"                                           │
+    │  2. Enable "Allow from this source"                          │
+    │  3. Go back and tap "Install"                                │
+    └─────────────────────────────────────────────────────────────┘
+
+
+STEP 8: Open and Enjoy!
+────────────────────────────────────────────────────────────────────────────
+
+    After Installation:
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                              │
+    │                  ✅ App installed                            │
+    │                                                              │
+    │                   [Done]  [Open]                             │
+    │                              ↑↑↑                             │
+    │                          TAP HERE                            │
+    │                                                              │
+    │  Or find "Doodle" in your app drawer                         │
+    └─────────────────────────────────────────────────────────────┘
+
+    The App:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  📝 Tasks                                        ⚙️           │
+    │  ─────────────────────────────────────────────────────────  │
+    │                                                              │
+    │  No tasks yet.                                               │
+    │  If something needs to be done, add it.                      │
+    │                                                              │
+    │                                                              │
+    │                                                              │
+    │                                                    [+]       │
+    │  ──────────────────────────────────────────────────────────│
+    │  📝 Tasks    |    ✅ Completed                               │
+    └─────────────────────────────────────────────────────────────┘
+
+    Tap the [+] button to add your first task!
+
+
+================================================================================
+                            TIMING EXPECTATIONS
+================================================================================
+
+If your workflow just started:
+    ⏱️ 0-2 min:   Setting up environment
+    ⏱️ 2-5 min:   Downloading dependencies  
+    ⏱️ 5-8 min:   Compiling code
+    ⏱️ 8-10 min:  Building APK
+    ✅ 10 min:    Ready to download!
+
+Check status at:
+https://github.com/maxin3820-jpg/Doodle/actions
+
+
+================================================================================
+                            COMMON SCREENS
+================================================================================
+
+While Building (Yellow Circle):
+┌─────────────────────────────────────────────────────────────┐
+│  Build Android APK  #1                                       │
+│  🟡 In progress                                              │
+│                                                              │
+│  This workflow run is in progress                            │
+│                                                              │
+│  Come back in a few minutes!                                 │
+└─────────────────────────────────────────────────────────────┘
+
+
+Build Successful (Green Check):
+┌─────────────────────────────────────────────────────────────┐
+│  Build Android APK  #1                                       │
+│  ✅ Success                                                   │
+│                                                              │
+│  This workflow run completed successfully                    │
+│                                                              │
+│  Scroll down to download APK!                                │
+└─────────────────────────────────────────────────────────────┘
+
+
+Build Failed (Red X):
+┌─────────────────────────────────────────────────────────────┐
+│  Build Android APK  #1                                       │
+│  ❌ Failure                                                   │
+│                                                              │
+│  This workflow run failed                                    │
+│                                                              │
+│  Click on "build" job to see error logs                      │
+└─────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                            URL SHORTCUTS
+================================================================================
+
+View All Workflows:
+https://github.com/maxin3820-jpg/Doodle/actions
+
+View Build APK Workflow:
+https://github.com/maxin3820-jpg/Doodle/actions/workflows/build-apk.yml
+
+Repository Home:
+https://github.com/maxin3820-jpg/Doodle
+
+
+================================================================================
+                            PRO TIPS
+================================================================================
+
+✓ Bookmark the Actions page for easy access
+✓ Artifacts expire after 90 days - download and save locally
+✓ You can re-run failed builds (click "Re-run jobs")
+✓ Watch builds in real-time (auto-refreshes every 10 seconds)
+✓ Download APK multiple times if needed (it doesn't expire until 90 days)
+
+
+================================================================================
+
+                    YOUR ACTION ITEMS RIGHT NOW:
+
+    1. Open: https://github.com/maxin3820-jpg/Doodle/actions
+    2. Check if build is complete (green checkmark)
+    3. If still building (yellow), wait 5-10 minutes
+    4. Download APK from Artifacts section
+    5. Install on phone
+    6. Enjoy your app! 🎉
+
+================================================================================

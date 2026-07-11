@@ -1,0 +1,139 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                                                                          ║
+║                     YOUR CODE IS READY TO UPLOAD!                        ║
+║                                                                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+Everything is set up with YOUR GitHub details already filled in!
+
+Repository: https://github.com/maxin3820-jpg/Doodle.git
+
+════════════════════════════════════════════════════════════════════════════
+
+                    🎯 DO THESE 3 THINGS NOW:
+
+════════════════════════════════════════════════════════════════════════════
+
+THING 1: Get Your GitHub Token (2 minutes)
+────────────────────────────────────────────────────────────────────────────
+
+1. Open this link: https://github.com/settings/tokens
+
+2. Click "Generate new token (classic)"
+
+3. Fill in:
+   - Note: Doodle upload
+   - Expiration: 90 days
+   - Check ONLY the "repo" box ☑️
+
+4. Click "Generate token" (green button)
+
+5. COPY THE TOKEN! (starts with ghp_...)
+   Save it in Notepad - you'll need it in 1 minute!
+
+
+THING 2: Run the Upload Script (1 minute)
+────────────────────────────────────────────────────────────────────────────
+
+Double-click this file:
+
+    📁 UPLOAD_NOW.bat
+
+When it asks for password:
+→ Paste your token (Ctrl+V)
+→ Press Enter
+
+Wait 1-2 minutes for upload to complete.
+
+
+THING 3: Download Your APK (10 minutes wait)
+────────────────────────────────────────────────────────────────────────────
+
+After upload succeeds:
+
+1. Open: https://github.com/maxin3820-jpg/Doodle/actions
+
+2. Wait for green checkmark ✅ (GitHub is building your APK - takes 10 min)
+
+3. Click on the workflow run
+
+4. Scroll down to "Artifacts"
+
+5. Download "doodle-debug-apk"
+
+6. Extract and install on your phone!
+
+
+════════════════════════════════════════════════════════════════════════════
+
+                    📝 CHECKLIST
+
+════════════════════════════════════════════════════════════════════════════
+
+□ Got token from: https://github.com/settings/tokens
+□ Saved token somewhere (you'll need it!)
+□ Double-clicked: UPLOAD_NOW.bat
+□ Pasted token when asked
+□ Saw "SUCCESS! CODE IS ON GITHUB!" message
+□ Opened: https://github.com/maxin3820-jpg/Doodle/actions
+□ Waiting for build to complete (10 min)
+□ Downloaded APK from Artifacts
+□ Installed on phone
+□ Enjoying the app! 🎉
+
+
+════════════════════════════════════════════════════════════════════════════
+
+                    ⚠️ IMPORTANT
+
+════════════════════════════════════════════════════════════════════════════
+
+When UPLOAD_NOW.bat asks for password:
+→ DO NOT use your GitHub password
+→ USE the Personal Access Token (the ghp_... thing)
+
+GitHub doesn't accept passwords anymore - only tokens!
+
+
+════════════════════════════════════════════════════════════════════════════
+
+                    🆘 NEED HELP?
+
+════════════════════════════════════════════════════════════════════════════
+
+Detailed guide: Open → QUICK_UPLOAD_GUIDE.txt
+
+Visual guide: Open → VISUAL_DOWNLOAD_GUIDE.txt
+
+Download guide: Open → DOWNLOAD_YOUR_APK.txt
+
+
+════════════════════════════════════════════════════════════════════════════
+
+                    ⏱️ TIME BREAKDOWN
+
+════════════════════════════════════════════════════════════════════════════
+
+Get token:          2 minutes
+Upload code:        1-2 minutes
+Wait for build:     10 minutes (GitHub builds APK)
+Download APK:       1 minute
+Install on phone:   1 minute
+────────────────────────────────
+TOTAL:             15 minutes
+
+
+════════════════════════════════════════════════════════════════════════════
+
+                    🚀 START NOW!
+
+════════════════════════════════════════════════════════════════════════════
+
+Step 1: https://github.com/settings/tokens (Get token)
+
+Step 2: Double-click UPLOAD_NOW.bat
+
+Step 3: https://github.com/maxin3820-jpg/Doodle/actions (Download APK)
+
+
+════════════════════════════════════════════════════════════════════════════

@@ -24,7 +24,7 @@ import com.doodle.app.data.model.Task
 import com.doodle.app.ui.components.*
 import com.doodle.app.ui.viewmodel.TasksViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TasksScreen(
     onNavigateToSettings: () -> Unit,

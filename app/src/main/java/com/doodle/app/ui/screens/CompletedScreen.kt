@@ -2,6 +2,7 @@ package com.doodle.app.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,7 +21,7 @@ import com.doodle.app.data.model.Task
 import com.doodle.app.ui.components.EmptyState
 import com.doodle.app.ui.viewmodel.CompletedViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun CompletedScreen(
     viewModel: CompletedViewModel = hiltViewModel()

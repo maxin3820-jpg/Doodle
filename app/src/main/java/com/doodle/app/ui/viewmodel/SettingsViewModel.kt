@@ -28,6 +28,9 @@ class SettingsViewModel @Inject constructor(
     val fontSize: StateFlow<FontSize> = appSettings.fontSize
         .stateIn(viewModelScope, SharingStarted.Eagerly, FontSize.Medium)
 
+    val topicsEnabled: StateFlow<Boolean> = appSettings.topicsEnabled
+        .stateIn(viewModelScope, SharingStarted.Eagerly, true)
+
     fun setThemeMode(themeMode: ThemeMode) {
         viewModelScope.launch {
             appSettings.setThemeMode(themeMode)
@@ -55,6 +58,12 @@ class SettingsViewModel @Inject constructor(
     fun setFontSize(fontSize: FontSize) {
         viewModelScope.launch {
             appSettings.setFontSize(fontSize)
+        }
+    }
+
+    fun setTopicsEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            appSettings.setTopicsEnabled(enabled)
         }
     }
 }

@@ -13,7 +13,8 @@ fun TaskDialog(
     title: String,
     initialValue: String,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
+    confirmLabel: String = stringResource(R.string.add)
 ) {
     var text by remember { mutableStateOf(initialValue) }
 
@@ -31,20 +32,12 @@ fun TaskDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = {
-                    if (text.isNotBlank()) {
-                        onConfirm(text)
-                    }
-                },
+                onClick = { if (text.isNotBlank()) onConfirm(text) },
                 enabled = text.isNotBlank()
-            ) {
-                Text(stringResource(R.string.add))
-            }
+            ) { Text(confirmLabel) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }

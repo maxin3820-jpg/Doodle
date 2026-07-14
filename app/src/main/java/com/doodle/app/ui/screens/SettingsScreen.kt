@@ -29,6 +29,7 @@ fun SettingsScreen(
     val backgroundColor by viewModel.backgroundColor.collectAsStateWithLifecycle()
     val fontFamily by viewModel.fontFamily.collectAsStateWithLifecycle()
     val fontSize by viewModel.fontSize.collectAsStateWithLifecycle()
+    val topicsEnabled by viewModel.topicsEnabled.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -106,6 +107,32 @@ fun SettingsScreen(
                     selectedOption = fontSize,
                     onOptionSelected = { viewModel.setFontSize(it) }
                 )
+            }
+
+            SettingsSection(title = stringResource(R.string.features)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.topics),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = stringResource(R.string.topics_description),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = topicsEnabled,
+                        onCheckedChange = { viewModel.setTopicsEnabled(it) }
+                    )
+                }
             }
         }
     }

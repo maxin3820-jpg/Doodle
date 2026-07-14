@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.doodle.app.data.database.AppDatabase
 import com.doodle.app.data.database.TaskDao
+import com.doodle.app.data.database.TopicDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,9 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideTaskDao(database: AppDatabase): TaskDao {
-        return database.taskDao()
-    }
+    fun provideTaskDao(database: AppDatabase): TaskDao = database.taskDao()
+
+    @Provides
+    @Singleton
+    fun provideTopicDao(database: AppDatabase): TopicDao = database.topicDao()
 }

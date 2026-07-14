@@ -24,6 +24,7 @@ class AppSettings @Inject constructor(
         private val BACKGROUND_COLOR = stringPreferencesKey("background_color")
         private val FONT_FAMILY = stringPreferencesKey("font_family")
         private val FONT_SIZE = stringPreferencesKey("font_size")
+        private val TOPICS_ENABLED = booleanPreferencesKey("topics_enabled")
     }
 
     val themeMode: Flow<ThemeMode> = dataStore.data.map { preferences ->
@@ -77,6 +78,10 @@ class AppSettings @Inject constructor(
             "extra_large" -> FontSize.ExtraLarge
             else -> FontSize.Medium
         }
+    }
+
+    val topicsEnabled: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[TOPICS_ENABLED] ?: true
     }
 
     suspend fun setThemeMode(themeMode: ThemeMode) {
@@ -135,6 +140,12 @@ class AppSettings @Inject constructor(
                 FontSize.Large -> "large"
                 FontSize.ExtraLarge -> "extra_large"
             }
+        }
+    }
+
+    suspend fun setTopicsEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[TOPICS_ENABLED] = enabled
         }
     }
 }

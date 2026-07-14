@@ -12,60 +12,32 @@ import javax.inject.Singleton
 class TaskRepository @Inject constructor(
     private val taskDao: TaskDao
 ) {
-    fun getActiveTasks(): Flow<List<Task>> {
-        return taskDao.getActiveTasks().map { entities ->
-            entities.map { it.toTask() }
-        }
-    }
+    fun getActiveTasks(): Flow<List<Task>> =
+        taskDao.getActiveTasks().map { it.map { e -> e.toTask() } }
 
-    fun getCompletedTasks(): Flow<List<Task>> {
-        return taskDao.getCompletedTasks().map { entities ->
-            entities.map { it.toTask() }
-        }
-    }
+    fun getCompletedTasks(): Flow<List<Task>> =
+        taskDao.getCompletedTasks().map { it.map { e -> e.toTask() } }
 
-    suspend fun addTask(title: String): Long {
-        val task = TaskEntity(title = title)
-        return taskDao.insertTask(task)
-    }
+    suspend fun addTask(title: String, topicId: Long? = null): Long =
+        taskDao.insertTask(TaskEntity(title = title, topicId = topicId))
 
-    suspend fun updateTask(task: Task) {
-        taskDao.updateTask(task.toEntity())
-    }
+    suspend fun updateTask(task: Task) = taskDao.updateTask(task.toEntity())
 
-    suspend fun completeTask(task: Task) {
-        val updatedTask = task.copy(
-            isCompleted = true,
-            completedAt = System.currentTimeMillis()
-        )
-        taskDao.updateTask(updatedTask.toEntity())
-    }
+    suspend fun completeTask(task: Task) =
+        taskDao.updateTask(task.copy(isCompleted = true, completedAt = System.currentTimeMillis()).toEntity())
 
-    suspend fun uncompleteTask(task: Task) {
-        val updatedTask = task.copy(
-            isCompleted = false,
-            completedAt = null
-        )
-        taskDao.updateTask(updatedTask.toEntity())
-    }
+    suspend fun uncompleteTask(task: Task) =
+        taskDao.updateTask(task.copy(isCompleted = false, completedAt = null).toEntity())
 
-    suspend fun deleteTask(task: Task) {
-        taskDao.deleteTask(task.toEntity())
-    }
+    suspend fun deleteTask(task: Task) = taskDao.deleteTask(task.toEntity())
 
     private fun TaskEntity.toTask() = Task(
-        id = id,
-        title = title,
-        isCompleted = isCompleted,
-        createdAt = createdAt,
-        completedAt = completedAt
+        id = id, title = title, isCompleted = isCompleted,
+        createdAt = createdAt, completedAt = completedAt, topicId = topicId
     )
 
     private fun Task.toEntity() = TaskEntity(
-        id = id,
-        title = title,
-        isCompleted = isCompleted,
-        createdAt = createdAt,
-        completedAt = completedAt
+        id = id, title = title, isCompleted = isCompleted,
+        createdAt = createdAt, completedAt = completedAt, topicId = topicId
     )
 }

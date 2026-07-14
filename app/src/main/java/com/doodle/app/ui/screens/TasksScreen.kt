@@ -3,9 +3,12 @@ package com.doodle.app.ui.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
@@ -17,16 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.doodle.app.R
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.model.Topic
 import com.doodle.app.ui.components.*
+import com.doodle.app.ui.navigation.Screen
 import com.doodle.app.ui.viewmodel.SettingsViewModel
 import com.doodle.app.ui.viewmodel.TasksViewModel
 import com.doodle.app.ui.viewmodel.TopicsViewModel
@@ -35,6 +37,7 @@ import com.doodle.app.ui.viewmodel.TopicsViewModel
 @Composable
 fun TasksScreen(
     onNavigateToSettings: () -> Unit,
+    onNavigateToTopic: (topicId: Long, topicName: String) -> Unit = { _, _ -> },
     tasksViewModel: TasksViewModel = hiltViewModel(),
     topicsViewModel: TopicsViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel = hiltViewModel()
@@ -71,7 +74,7 @@ fun TasksScreen(
             val hasGeneralTasks = uiState.activeTasks.isNotEmpty()
             val hasTopics = topicsEnabled && topicsUiState.topics.isNotEmpty()
 
-            if (!hasGeneralTasks && !hasTopics) {
+            if (!hasGeneralTasks && !hasTopics && !(topicsEnabled)) {
                 EmptyState(
                     title = stringResource(R.string.no_tasks_yet),
                     description = stringResource(R.string.no_tasks_description),
@@ -80,75 +83,52 @@ fun TasksScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 88.dp),
+                    contentPadding = PaddingValues(
+                        start = 16.dp, end = 16.dp, top = 16.dp, bottom = 88.dp
+                    ),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     // ── General tasks ──────────────────────────────────────
-                    items(
-                        items = uiState.activeTasks,
-                        key = { "task_${it.id}" }
-                    ) { task ->
-                        SwipeToCompleteTaskCard(
-                            task = task,
-                            onComplete = { tasksViewModel.completeTask(task) },
-                            onLongClick = { tasksViewModel.showEditDialog(task) },
-                            modifier = Modifier.animateItem()
-                        )
-                    }
-
-                    // ── Topics section ─────────────────────────────────────
-                    if (topicsEnabled && topicsUiState.topics.isNotEmpty()) {
-                        item(key = "topics_header") {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .animateItem()
-                                    .padding(top = if (hasGeneralTasks) 8.dp else 0.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                    if (uiState.activeTasks.isEmpty() && !topicsEnabled) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillParentMaxSize(),
+                                contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = stringResource(R.string.topics),
-                                    style = MaterialTheme.typography.labelLarge,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.SemiBold
+                                EmptyState(
+                                    title = stringResource(R.string.no_tasks_yet),
+                                    description = stringResource(R.string.no_tasks_description)
                                 )
-                                TextButton(
-                                    onClick = { topicsViewModel.showAddTopicDialog() },
-                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.add_topic),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
-                                }
                             }
                         }
-
+                    } else {
                         items(
-                            items = topicsUiState.topics,
-                            key = { "topic_${it.id}" }
-                        ) { topic ->
-                            TopicCard(
-                                topic = topic,
-                                topicsViewModel = topicsViewModel,
+                            items = uiState.activeTasks,
+                            key = { "task_${it.id}" }
+                        ) { task ->
+                            SwipeToCompleteTaskCard(
+                                task = task,
+                                onComplete = { tasksViewModel.completeTask(task) },
+                                onLongClick = { tasksViewModel.showEditDialog(task) },
                                 modifier = Modifier.animateItem()
                             )
                         }
-                    } else if (topicsEnabled && topicsUiState.topics.isEmpty()) {
-                        item(key = "topics_empty") {
-                            TextButton(
-                                onClick = { topicsViewModel.showAddTopicDialog() },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .animateItem()
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.add_first_topic),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
+                    }
+
+                    // ── Topics pill row ────────────────────────────────────
+                    if (topicsEnabled) {
+                        item(key = "topics_row") {
+                            TopicPillRow(
+                                topics = topicsUiState.topics,
+                                onTopicClick = { topic ->
+                                    onNavigateToTopic(topic.id, topic.name)
+                                },
+                                onTopicLongClick = { topic ->
+                                    topicsViewModel.showDeleteTopicDialog(topic)
+                                },
+                                onAddTopic = { topicsViewModel.showAddTopicDialog() },
+                                modifier = Modifier.animateItem()
+                            )
                         }
                     }
                 }
@@ -207,31 +187,27 @@ fun TasksScreen(
             )
         }
 
-        if (topicsUiState.showAddTaskDialog && topicsUiState.selectedTopic != null) {
-            TaskDialog(
-                title = stringResource(R.string.new_task_in_topic, topicsUiState.selectedTopic!!.name),
-                initialValue = "",
-                confirmLabel = stringResource(R.string.add),
-                onDismiss = { topicsViewModel.hideAddTaskDialog() },
-                onConfirm = { title ->
-                    topicsViewModel.addTaskToTopic(title, topicsUiState.selectedTopic!!.id)
-                    topicsViewModel.hideAddTaskDialog()
-                }
-            )
-        }
-
         if (topicsUiState.showDeleteTopicDialog && topicsUiState.selectedTopic != null) {
             AlertDialog(
                 onDismissRequest = { topicsViewModel.hideDeleteTopicDialog() },
                 title = { Text(stringResource(R.string.delete_topic)) },
-                text = { Text(stringResource(R.string.delete_topic_message, topicsUiState.selectedTopic!!.name)) },
+                text = {
+                    Text(
+                        stringResource(
+                            R.string.delete_topic_message,
+                            topicsUiState.selectedTopic!!.name
+                        )
+                    )
+                },
                 confirmButton = {
                     TextButton(
                         onClick = {
                             topicsViewModel.deleteTopic(topicsUiState.selectedTopic!!)
                             topicsViewModel.hideDeleteTopicDialog()
                         },
-                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
                     ) { Text(stringResource(R.string.delete)) }
                 },
                 dismissButton = {
@@ -244,121 +220,83 @@ fun TasksScreen(
     }
 }
 
-// ── Topic card with its own task list ─────────────────────────────────────────
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+// ── Topic pill row ─────────────────────────────────────────────────────────────
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TopicCard(
-    topic: Topic,
-    topicsViewModel: TopicsViewModel,
+fun TopicPillRow(
+    topics: List<Topic>,
+    onTopicClick: (Topic) -> Unit,
+    onTopicLongClick: (Topic) -> Unit,
+    onAddTopic: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Each topic card observes only its own tasks — no unnecessary recompositions
-    val tasks by topicsViewModel.getTasksForTopic(topic.id).collectAsStateWithLifecycle()
-
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+    Column(modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.topics),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            // Topic header
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .combinedClickable(
-                        onClick = {},
-                        onLongClick = { topicsViewModel.showDeleteTopicDialog(topic) }
-                    )
-                    .padding(horizontal = 14.dp, vertical = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            topics.forEach { topic ->
+                TopicPill(
+                    name = topic.name,
+                    onClick = { onTopicClick(topic) },
+                    onLongClick = { onTopicLongClick(topic) }
+                )
+            }
+            // Add new topic pill
+            Surface(
+                modifier = Modifier.combinedClickable(onClick = onAddTopic),
+                shape = RoundedCornerShape(50),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                tonalElevation = 0.dp
             ) {
                 Text(
-                    text = topic.name,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.weight(1f)
+                    text = "+ ${stringResource(R.string.new_topic)}",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp)
                 )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (tasks.isNotEmpty()) {
-                        Text(
-                            text = "${tasks.size}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                    }
-                    IconButton(
-                        onClick = { topicsViewModel.showAddTaskDialog(topic) },
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add),
-                            modifier = Modifier.size(18.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
             }
-
-            // Topic tasks — compact size
-            if (tasks.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.no_tasks_in_topic),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp)
-                )
-            } else {
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 14.dp),
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
-                )
-                tasks.forEach { task ->
-                    TopicTaskRow(
-                        task = task,
-                        onComplete = { topicsViewModel.completeTask(task) }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun TopicTaskRow(
-    task: Task,
-    onComplete: () -> Unit
+fun TopicPill(
+    name: String,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 2.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Surface(
+        modifier = Modifier.combinedClickable(
+            onClick = onClick,
+            onLongClick = onLongClick
+        ),
+        shape = RoundedCornerShape(50),
+        color = MaterialTheme.colorScheme.primaryContainer,
+        tonalElevation = 2.dp
     ) {
-        Checkbox(
-            checked = false,
-            onCheckedChange = { onComplete() },
-            modifier = Modifier.size(32.dp)
-        )
         Text(
-            text = task.title,
-            style = MaterialTheme.typography.bodySmall,
-            maxLines = 2,
+            text = name,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f).padding(end = 8.dp)
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp)
         )
     }
 }
 
-// ── Swipe to complete wrapper ─────────────────────────────────────────────────
+// ── Swipe to complete wrapper ──────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SwipeToCompleteTaskCard(
@@ -408,7 +346,7 @@ fun SwipeToCompleteTaskCard(
     }
 }
 
-// ── Regular task card ─────────────────────────────────────────────────────────
+// ── Regular task card ──────────────────────────────────────────────────────────
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskCard(

@@ -81,6 +81,11 @@ fun MainScreen() {
     val onNavigateToSettings: () -> Unit = remember(navController) {
         { navController.navigate(Screen.Settings.route) }
     }
+    val onNavigateToTopic: (Long, String) -> Unit = remember(navController) {
+        { topicId, topicName ->
+            navController.navigate(Screen.TopicDetail.createRoute(topicId, topicName))
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -107,7 +112,10 @@ fun MainScreen() {
                 navController = navController,
                 startDestination = Screen.Tasks.route,
                 tasksContent = {
-                    TasksScreen(onNavigateToSettings = onNavigateToSettings)
+                    TasksScreen(
+                        onNavigateToSettings = onNavigateToSettings,
+                        onNavigateToTopic = onNavigateToTopic
+                    )
                 },
                 completedContent = {
                     CompletedScreen()

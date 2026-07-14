@@ -73,18 +73,12 @@ fun TasksScreen(
                         items = uiState.activeTasks,
                         key = { it.id }
                     ) { task ->
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = fadeIn(animationSpec = tween(250)) + expandVertically(),
-                            exit = fadeOut(animationSpec = tween(250)) + shrinkVertically(),
-                            modifier = Modifier.animateItemPlacement()
-                        ) {
-                            TaskCard(
-                                task = task,
-                                onCheckedChange = { viewModel.completeTask(task) },
-                                onLongClick = { viewModel.showEditDialog(task) }
-                            )
-                        }
+                        TaskCard(
+                            task = task,
+                            onCheckedChange = { viewModel.completeTask(task) },
+                            onLongClick = { viewModel.showEditDialog(task) },
+                            modifier = Modifier.animateItem()
+                        )
                     }
                 }
             }

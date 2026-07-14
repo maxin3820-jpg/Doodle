@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,23 +15,16 @@ class CompletedViewModel @Inject constructor(
     private val repository: TaskRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CompletedUiState())
-    val uiState: StateFlow<CompletedUiState> = _uiState.asStateFlow()
-
-    init {
-        loadCompletedTasks()
-    }
-
-    private fun loadCompletedTasks() {
-        viewModelScope.launch {
-            repository.getCompletedTasks().collect { tasks ->
-                _uiState.update { it.copy(completedTasks = tasks) }
-            }
-        }
-    }
+    val uiState: StateFlow<CompletedUiState> = repository.getCompletedTasks()
+        .map { CompletedUiState(it) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = CompletedUiState()
+        )
 
     fun uncompleteTask(task: Task) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.uncompleteTask(task)
         }
     }

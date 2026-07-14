@@ -23,8 +23,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            isDebuggable = true
+        }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -39,6 +43,9 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += listOf(
+            "-opt-in=kotlin.RequiresOptIn"
+        )
     }
 
     buildFeatures {
@@ -61,6 +68,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     // Compose
     val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
@@ -69,7 +77,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
+    // Only import the icons actually used — not the full extended set (saves ~2MB)
+    implementation("androidx.compose.material:material-icons-core")
     
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")

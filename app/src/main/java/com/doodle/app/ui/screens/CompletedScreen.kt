@@ -1,7 +1,5 @@
 package com.doodle.app.ui.screens
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -56,17 +54,11 @@ fun CompletedScreen(
                         items = uiState.completedTasks,
                         key = { it.id }
                     ) { task ->
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = fadeIn(animationSpec = tween(250)) + expandVertically(),
-                            exit = fadeOut(animationSpec = tween(250)) + shrinkVertically(),
-                            modifier = Modifier.animateItemPlacement()
-                        ) {
-                            CompletedTaskCard(
-                                task = task,
-                                onCheckedChange = { viewModel.uncompleteTask(task) }
-                            )
-                        }
+                        CompletedTaskCard(
+                            task = task,
+                            onCheckedChange = { viewModel.uncompleteTask(task) },
+                            modifier = Modifier.animateItem()
+                        )
                     }
                 }
             }

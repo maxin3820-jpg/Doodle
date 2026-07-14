@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,70 +15,78 @@ class TasksViewModel @Inject constructor(
     private val repository: TaskRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(TasksUiState())
-    val uiState: StateFlow<TasksUiState> = _uiState.asStateFlow()
+    // Combine DB flow with dialog state in one StateFlow — no manual collect loop
+    private val _dialogState = MutableStateFlow(DialogState())
 
-    init {
-        loadTasks()
-    }
-
-    private fun loadTasks() {
-        viewModelScope.launch {
-            repository.getActiveTasks().collect { tasks ->
-                _uiState.update { it.copy(activeTasks = tasks) }
-            }
-        }
-    }
+    val uiState: StateFlow<TasksUiState> = combine(
+        repository.getActiveTasks(),
+        _dialogState
+    ) { tasks, dialogs ->
+        TasksUiState(
+            activeTasks = tasks,
+            showAddDialog = dialogs.showAddDialog,
+            showEditDialog = dialogs.showEditDialog,
+            showDeleteDialog = dialogs.showDeleteDialog,
+            editingTask = dialogs.editingTask,
+            taskToDelete = dialogs.taskToDelete
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = TasksUiState()
+    )
 
     fun addTask(title: String) {
         if (title.isBlank()) return
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.addTask(title.trim())
         }
     }
 
     fun completeTask(task: Task) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.completeTask(task)
         }
     }
 
     fun updateTask(task: Task) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.updateTask(task)
         }
     }
 
     fun deleteTask(task: Task) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteTask(task)
         }
     }
 
-    fun showAddDialog() {
-        _uiState.update { it.copy(showAddDialog = true) }
+    fun showAddDialog() = _dialogState.update { it.copy(showAddDialog = true) }
+    fun hideAddDialog() = _dialogState.update { it.copy(showAddDialog = false) }
+
+    fun showEditDialog(task: Task) = _dialogState.update {
+        it.copy(showEditDialog = true, editingTask = task)
+    }
+    fun hideEditDialog() = _dialogState.update {
+        it.copy(showEditDialog = false, editingTask = null)
     }
 
-    fun hideAddDialog() {
-        _uiState.update { it.copy(showAddDialog = false) }
+    fun showDeleteDialog(task: Task) = _dialogState.update {
+        it.copy(showDeleteDialog = true, taskToDelete = task)
     }
-
-    fun showEditDialog(task: Task) {
-        _uiState.update { it.copy(showEditDialog = true, editingTask = task) }
-    }
-
-    fun hideEditDialog() {
-        _uiState.update { it.copy(showEditDialog = false, editingTask = null) }
-    }
-
-    fun showDeleteDialog(task: Task) {
-        _uiState.update { it.copy(showDeleteDialog = true, taskToDelete = task) }
-    }
-
-    fun hideDeleteDialog() {
-        _uiState.update { it.copy(showDeleteDialog = false, taskToDelete = null) }
+    fun hideDeleteDialog() = _dialogState.update {
+        it.copy(showDeleteDialog = false, taskToDelete = null)
     }
 }
+
+// Internal state for dialogs only — keeps DB flow separate
+private data class DialogState(
+    val showAddDialog: Boolean = false,
+    val showEditDialog: Boolean = false,
+    val showDeleteDialog: Boolean = false,
+    val editingTask: Task? = null,
+    val taskToDelete: Task? = null
+)
 
 data class TasksUiState(
     val activeTasks: List<Task> = emptyList(),

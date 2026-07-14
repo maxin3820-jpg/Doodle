@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,7 +29,6 @@ import com.doodle.app.R
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.model.Topic
 import com.doodle.app.ui.components.*
-import com.doodle.app.ui.navigation.Screen
 import com.doodle.app.ui.viewmodel.SettingsViewModel
 import com.doodle.app.ui.viewmodel.TasksViewModel
 import com.doodle.app.ui.viewmodel.TopicsViewModel
@@ -48,14 +48,34 @@ fun TasksScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.tasks)) },
-                actions = {
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings))
+            // ── Top app bar + topic pill header in one column ──────────────
+            Column {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.tasks)) },
+                    actions = {
+                        IconButton(onClick = onNavigateToSettings) {
+                            Icon(
+                                Icons.Default.Settings,
+                                contentDescription = stringResource(R.string.settings)
+                            )
+                        }
                     }
+                )
+
+                // Topic pill header — only shown when topics are enabled
+                if (topicsEnabled) {
+                    TopicPillHeader(
+                        topics = topicsUiState.topics,
+                        onTopicClick = { topic ->
+                            onNavigateToTopic(topic.id, topic.name)
+                        },
+                        onTopicLongClick = { topic ->
+                            topicsViewModel.showDeleteTopicDialog(topic)
+                        },
+                        onAddTopic = { topicsViewModel.showAddTopicDialog() }
+                    )
                 }
-            )
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -71,10 +91,7 @@ fun TasksScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            val hasGeneralTasks = uiState.activeTasks.isNotEmpty()
-            val hasTopics = topicsEnabled && topicsUiState.topics.isNotEmpty()
-
-            if (!hasGeneralTasks && !hasTopics && !(topicsEnabled)) {
+            if (uiState.activeTasks.isEmpty()) {
                 EmptyState(
                     title = stringResource(R.string.no_tasks_yet),
                     description = stringResource(R.string.no_tasks_description),
@@ -84,58 +101,26 @@ fun TasksScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        start = 16.dp, end = 16.dp, top = 16.dp, bottom = 88.dp
+                        start = 16.dp, end = 16.dp, top = 12.dp, bottom = 88.dp
                     ),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // ── General tasks ──────────────────────────────────────
-                    if (uiState.activeTasks.isEmpty() && !topicsEnabled) {
-                        item {
-                            Box(
-                                modifier = Modifier.fillParentMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                EmptyState(
-                                    title = stringResource(R.string.no_tasks_yet),
-                                    description = stringResource(R.string.no_tasks_description)
-                                )
-                            }
-                        }
-                    } else {
-                        items(
-                            items = uiState.activeTasks,
-                            key = { "task_${it.id}" }
-                        ) { task ->
-                            SwipeToCompleteTaskCard(
-                                task = task,
-                                onComplete = { tasksViewModel.completeTask(task) },
-                                onLongClick = { tasksViewModel.showEditDialog(task) },
-                                modifier = Modifier.animateItem()
-                            )
-                        }
-                    }
-
-                    // ── Topics pill row ────────────────────────────────────
-                    if (topicsEnabled) {
-                        item(key = "topics_row") {
-                            TopicPillRow(
-                                topics = topicsUiState.topics,
-                                onTopicClick = { topic ->
-                                    onNavigateToTopic(topic.id, topic.name)
-                                },
-                                onTopicLongClick = { topic ->
-                                    topicsViewModel.showDeleteTopicDialog(topic)
-                                },
-                                onAddTopic = { topicsViewModel.showAddTopicDialog() },
-                                modifier = Modifier.animateItem()
-                            )
-                        }
+                    items(
+                        items = uiState.activeTasks,
+                        key = { "task_${it.id}" }
+                    ) { task ->
+                        SwipeToCompleteTaskCard(
+                            task = task,
+                            onComplete = { tasksViewModel.completeTask(task) },
+                            onLongClick = { tasksViewModel.showEditDialog(task) },
+                            modifier = Modifier.animateItem()
+                        )
                     }
                 }
             }
         }
 
-        // ── General task dialogs ───────────────────────────────────────────
+        // ── Dialogs ────────────────────────────────────────────────────────
         if (uiState.showAddDialog) {
             TaskDialog(
                 title = stringResource(R.string.new_task),
@@ -173,7 +158,6 @@ fun TasksScreen(
             )
         }
 
-        // ── Topic dialogs ──────────────────────────────────────────────────
         if (topicsUiState.showAddTopicDialog) {
             TaskDialog(
                 title = stringResource(R.string.new_topic),
@@ -220,27 +204,25 @@ fun TasksScreen(
     }
 }
 
-// ── Topic pill row ─────────────────────────────────────────────────────────────
+// ── Topic pill header — pinned below the top app bar ─────────────────────────
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TopicPillRow(
+fun TopicPillHeader(
     topics: List<Topic>,
     onTopicClick: (Topic) -> Unit,
     onTopicLongClick: (Topic) -> Unit,
-    onAddTopic: () -> Unit,
-    modifier: Modifier = Modifier
+    onAddTopic: () -> Unit
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(R.string.topics),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 2.dp
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -251,12 +233,13 @@ fun TopicPillRow(
                     onLongClick = { onTopicLongClick(topic) }
                 )
             }
-            // Add new topic pill
+
+            // Add topic pill — always at end
             Surface(
                 modifier = Modifier.combinedClickable(onClick = onAddTopic),
                 shape = RoundedCornerShape(50),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                tonalElevation = 0.dp
+                color = Color.Transparent,
+                border = ButtonDefaults.outlinedButtonBorder
             ) {
                 Text(
                     text = "+ ${stringResource(R.string.new_topic)}",
@@ -283,11 +266,12 @@ fun TopicPill(
         ),
         shape = RoundedCornerShape(50),
         color = MaterialTheme.colorScheme.primaryContainer,
-        tonalElevation = 2.dp
+        tonalElevation = 0.dp
     ) {
         Text(
             text = name,
             style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

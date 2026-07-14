@@ -3,451 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Doodle App – Screen Previews</title>
+<title>Doodle – Preview</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Segoe UI',sans-serif; background:#e8eaf0; padding:40px 20px; color:#212121; }
-h1 { text-align:center; font-size:26px; margin-bottom:6px; color:#1976D2; }
-.subtitle { text-align:center; color:#757575; margin-bottom:36px; font-size:13px; }
-.section-title { text-align:center; font-size:16px; font-weight:700; color:#444;
-  margin:40px 0 20px; width:100%; text-transform:uppercase; letter-spacing:1px; }
-.grid { display:flex; flex-wrap:wrap; gap:28px; justify-content:center; }
-.screen-wrap { display:flex; flex-direction:column; align-items:center; gap:10px; }
-.screen-label { font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:.6px; }
-.phone { width:255px; height:530px; background:#fff; border-radius:34px;
-  border:7px solid #1a1a1a; box-shadow:0 16px 48px rgba(0,0,0,.22);
-  overflow:hidden; display:flex; flex-direction:column; position:relative; }
-.phone.dark { background:#121212; color:#e0e0e0; border-color:#000; }
-.status-bar { height:18px; display:flex; justify-content:flex-end; align-items:center;
-  padding:0 14px; font-size:8px; color:#aaa; flex-shrink:0; background:inherit; }
-.top-bar { height:46px; display:flex; align-items:center; padding:0 6px 0 14px;
-  font-size:14px; font-weight:600; flex-shrink:0; background:inherit;
-  border-bottom:1px solid rgba(0,0,0,.06); }
-.dark .top-bar { border-bottom-color:rgba(255,255,255,.07); }
-.top-bar .title { flex:1; }
-.icon-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center;
-  border-radius:50%; font-size:15px; cursor:pointer; color:#555; }
-.dark .icon-btn { color:#aaa; }
-.content { flex:1; overflow:hidden; padding:10px; display:flex; flex-direction:column; gap:7px; position:relative; }
-</style>
-
-<style>
-/* Task cards */
-.task-card { background:#fff; border-radius:9px; padding:10px 12px; display:flex;
-  align-items:center; gap:9px; box-shadow:0 1px 4px rgba(0,0,0,.09); font-size:11px; color:#212121; flex-shrink:0; }
-.dark .task-card { background:#1e1e1e; color:#e0e0e0; box-shadow:0 1px 4px rgba(0,0,0,.4); }
-.checkbox { width:15px; height:15px; border-radius:3px; border:2px solid #1976D2;
-  flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-.checkbox.checked { background:#1976D2; border-color:#1976D2; }
-.checkbox.checked::after { content:'✓'; color:#fff; font-size:9px; font-weight:bold; }
-.dark .checkbox { border-color:#90CAF9; }
-.dark .checkbox.checked { background:#90CAF9; }
-.dark .checkbox.checked::after { color:#121212; }
-.task-text { flex:1; line-height:1.3; }
-.task-text.done { text-decoration:line-through; opacity:.45; }
-.fab { position:absolute; bottom:54px; right:12px; width:42px; height:42px;
-  border-radius:13px; background:#1976D2; color:#fff; display:flex; align-items:center;
-  justify-content:center; font-size:20px; font-weight:300;
-  box-shadow:0 4px 12px rgba(25,118,210,.4); z-index:10; }
-.bottom-nav { height:50px; border-top:1px solid rgba(0,0,0,.07); display:flex;
-  flex-shrink:0; background:inherit; }
-.dark .bottom-nav { border-top-color:rgba(255,255,255,.07); }
-.nav-item { flex:1; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:2px; font-size:8px; color:#999; }
-.nav-item.active { color:#1976D2; }
-.dark .nav-item.active { color:#90CAF9; }
-.nav-icon { font-size:15px; }
-/* Topics */
-.topics-header { display:flex; justify-content:space-between; align-items:center;
-  padding:4px 2px 2px; margin-top:2px; }
-.topics-header-label { font-size:10px; font-weight:700; color:#1976D2; letter-spacing:.4px; text-transform:uppercase; }
-.topics-header-btn { font-size:9px; color:#1976D2; font-weight:600; }
-.topic-card { background:rgba(245,245,245,.8); border-radius:9px;
-  border:1px solid rgba(0,0,0,.07); overflow:hidden; flex-shrink:0; }
-.dark .topic-card { background:rgba(44,44,44,.8); border-color:rgba(255,255,255,.08); }
-.topic-header { display:flex; align-items:center; justify-content:space-between;
-  padding:8px 10px; }
-.topic-name { font-size:11px; font-weight:600; color:#212121; flex:1; }
-.dark .topic-name { color:#e0e0e0; }
-.topic-count { font-size:9px; color:#999; margin-right:4px; }
-.topic-add-btn { font-size:13px; color:#1976D2; font-weight:700; padding:0 4px; }
-.topic-divider { height:1px; background:rgba(0,0,0,.08); margin:0 10px; }
-.dark .topic-divider { background:rgba(255,255,255,.08); }
-.topic-task-row { display:flex; align-items:center; gap:4px; padding:4px 8px; }
-.mini-checkbox { width:13px; height:13px; border-radius:2px; border:1.5px solid #1976D2; flex-shrink:0; }
-.topic-task-text { font-size:10px; color:#333; line-height:1.3; flex:1; }
-.dark .topic-task-text { color:#ccc; }
-.topic-empty-text { font-size:9px; color:#aaa; padding:5px 10px 6px; font-style:italic; }
-/* Empty state */
-.empty-state { flex:1; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:7px; padding:20px; text-align:center; color:#9e9e9e; }
-.empty-icon { font-size:34px; opacity:.35; }
-.empty-title { font-size:13px; font-weight:600; }
-.empty-desc { font-size:10px; opacity:.7; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:#e8eaf0;padding:36px 16px;color:#212121}
+h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
+.sub{text-align:center;color:#888;font-size:12px;margin-bottom:32px}
+.sec{text-align:center;font-size:13px;font-weight:700;color:#555;margin:36px 0 18px;
+  text-transform:uppercase;letter-spacing:1px}
+.grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.lbl{font-size:10px;font-weight:700;color:#777;text-transform:uppercase;letter-spacing:.5px}
+/* Phone shell */
+.phone{width:250px;height:520px;background:#fff;border-radius:32px;
+  border:7px solid #1a1a1a;box-shadow:0 14px 40px rgba(0,0,0,.2);
+  overflow:hidden;display:flex;flex-direction:column;position:relative}
+.phone.dark{background:#121212;color:#e0e0e0;border-color:#000}
+.sb{height:16px;display:flex;justify-content:flex-end;align-items:center;
+  padding:0 12px;font-size:7px;color:#aaa;flex-shrink:0;background:inherit}
+.tb{height:44px;display:flex;align-items:center;padding:0 4px 0 14px;
+  font-size:13px;font-weight:600;flex-shrink:0;background:inherit;
+  border-bottom:1px solid rgba(0,0,0,.05)}
+.dark .tb{border-bottom-color:rgba(255,255,255,.06)}
+.tb .t{flex:1}.ib{width:32px;height:32px;display:flex;align-items:center;
+  justify-content:center;border-radius:50%;font-size:14px;color:#666}
+.dark .ib{color:#aaa}
+.content{flex:1;overflow:hidden;padding:10px;display:flex;flex-direction:column;gap:8px;position:relative}
+/* Task card */
+.tc{background:#fff;border-radius:10px;padding:10px 12px;display:flex;
+  align-items:center;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);font-size:11px;flex-shrink:0}
+.dark .tc{background:#1e1e1e;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.cb{width:14px;height:14px;border-radius:3px;border:1.8px solid #1976D2;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center}
+.cb.done{background:#1976D2}.cb.done::after{content:'✓';color:#fff;font-size:8px;font-weight:700}
+.dark .cb{border-color:#90CAF9}.dark .cb.done{background:#90CAF9}
+.dark .cb.done::after{color:#121212}
+.tt{flex:1;line-height:1.3;color:#212121}.dark .tt{color:#e0e0e0}
+.tt.s{text-decoration:line-through;opacity:.4}
+/* FAB */
+.fab{position:absolute;bottom:52px;right:11px;width:40px;height:40px;border-radius:12px;
+  background:#1976D2;color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:18px;box-shadow:0 3px 10px rgba(25,118,210,.4);z-index:10}
+/* Bottom nav */
+.bn{height:48px;border-top:1px solid rgba(0,0,0,.07);display:flex;flex-shrink:0;background:inherit}
+.dark .bn{border-top-color:rgba(255,255,255,.07)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:1px;font-size:7px;color:#aaa}
+.ni.on{color:#1976D2}.dark .ni.on{color:#90CAF9}
+.ni-ic{font-size:14px}
+/* Topic pill row */
+.pill-section{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.pill-label{font-size:9px;color:#999;letter-spacing:.3px}
+.pill-row{display:flex;flex-wrap:nowrap;gap:6px;overflow:hidden}
+.pill{border-radius:50px;padding:5px 12px;font-size:10px;font-weight:600;
+  white-space:nowrap;cursor:pointer;flex-shrink:0}
+.pill.active{background:rgba(25,118,210,.15);color:#1976D2}
+.dark .pill.active{background:rgba(144,202,249,.15);color:#90CAF9}
+.pill.add{background:rgba(0,0,0,.06);color:#888}
+.dark .pill.add{background:rgba(255,255,255,.08);color:#aaa}
+/* Empty */
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:6px;text-align:center;color:#aaa;padding:16px}
+.ei{font-size:30px;opacity:.3}.et{font-size:12px;font-weight:600}.ed{font-size:9px;opacity:.7}
+/* Topic detail screen */
+.tdc{flex:1;overflow:hidden;padding:10px;display:flex;flex-direction:column;gap:8px;position:relative}
 /* Settings */
-.settings-content { flex:1; overflow:hidden; padding:10px 12px;
-  display:flex; flex-direction:column; gap:12px; }
-.s-section-title { font-size:10px; font-weight:700; color:#1976D2;
-  text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
-.s-option { background:#f5f5f5; border-radius:7px; padding:7px 10px;
-  display:flex; align-items:center; justify-content:space-between;
-  font-size:10px; margin-bottom:2px; color:#444; }
-.s-option.sel { background:rgba(25,118,210,.1); color:#1976D2; font-weight:600; }
-.radio { width:11px; height:11px; border-radius:50%; border:2px solid #bbb; flex-shrink:0; }
-.radio.sel { border-color:#1976D2; background:radial-gradient(circle,#1976D2 45%,transparent 45%); }
-.s-toggle-row { display:flex; align-items:center; justify-content:space-between;
-  background:#f5f5f5; border-radius:7px; padding:8px 10px; }
-.s-toggle-label { font-size:10px; font-weight:600; color:#333; }
-.s-toggle-desc { font-size:9px; color:#888; margin-top:1px; }
-.toggle-on { width:28px; height:16px; background:#1976D2; border-radius:8px;
-  position:relative; flex-shrink:0; }
-.toggle-on::after { content:''; position:absolute; right:2px; top:2px;
-  width:12px; height:12px; border-radius:50%; background:#fff; }
-.toggle-off { width:28px; height:16px; background:#ccc; border-radius:8px;
-  position:relative; flex-shrink:0; }
-.toggle-off::after { content:''; position:absolute; left:2px; top:2px;
-  width:12px; height:12px; border-radius:50%; background:#fff; }
-/* Swipe hint */
-.swipe-hint { position:absolute; left:0; top:50%; transform:translateY(-50%);
-  width:42%; height:38px; background:#1976D2; border-radius:9px;
-  display:flex; align-items:center; padding-left:12px; z-index:5; }
-/* Dialog overlay */
-.dialog-overlay { position:absolute; inset:0; background:rgba(0,0,0,.38);
-  display:flex; align-items:center; justify-content:center; z-index:20; padding:18px; }
-.dialog { background:#fff; border-radius:14px; padding:18px; width:100%;
-  box-shadow:0 8px 28px rgba(0,0,0,.22); }
-.dialog-title { font-size:13px; font-weight:700; margin-bottom:10px; }
-.dialog-input { border:1px solid #bbb; border-radius:7px; padding:7px 9px;
-  font-size:10px; width:100%; color:#333; margin-bottom:12px; }
-.dialog-actions { display:flex; justify-content:flex-end; gap:8px; }
-.btn { font-size:10px; font-weight:700; color:#1976D2; padding:4px 6px;
-  border-radius:5px; cursor:pointer; }
-.btn.cancel { color:#888; }
-/* Accent colours */
-.green .checkbox,.green .mini-checkbox,.green .fab,.green .nav-item.active,
-.green .topics-header-label,.green .topics-header-btn,.green .topic-add-btn { color:#388E3C; }
-.green .checkbox,.green .mini-checkbox { border-color:#388E3C; }
-.green .fab { background:#388E3C; }
-.green .nav-item.active { color:#388E3C; }
-.purple .fab { background:#7B1FA2; }
-.purple .checkbox,.purple .mini-checkbox { border-color:#7B1FA2; }
-.dark .checkbox.checked { color:#90CAF9; }
-</style>
-
+.sc{flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:10px}
+.st{font-size:9px;font-weight:700;color:#1976D2;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.so{background:#f5f5f5;border-radius:7px;padding:6px 10px;display:flex;
+  align-items:center;justify-content:space-between;font-size:9px;margin-bottom:2px;color:#555}
+.so.s{background:rgba(25,118,210,.1);color:#1976D2;font-weight:700}
+.rd{width:10px;height:10px;border-radius:50%;border:1.8px solid #ccc;flex-shrink:0}
+.rd.s{border-color:#1976D2;background:radial-gradient(circle,#1976D2 42%,transparent 42%)}
+.tog-row{display:flex;align-items:center;justify-content:space-between;
+  background:#f5f5f5;border-radius:7px;padding:8px 10px}
+.tog-l{font-size:9px;font-weight:600;color:#333}
+.tog-d{font-size:8px;color:#888;margin-top:1px}
+.tog-on{width:26px;height:14px;background:#1976D2;border-radius:7px;position:relative;flex-shrink:0}
+.tog-on::after{content:'';position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+.tog-off{width:26px;height:14px;background:#ccc;border-radius:7px;position:relative;flex-shrink:0}
+.tog-off::after{content:'';position:absolute;left:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+/* swipe */
+.swipe-bg{position:absolute;left:0;top:0;bottom:0;width:44%;background:#1976D2;
+  border-radius:10px;display:flex;align-items:center;padding-left:11px;z-index:1}
+/* dialog */
+.dov{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;
+  align-items:center;justify-content:center;z-index:20;padding:16px}
+.dlg{background:#fff;border-radius:14px;padding:16px;width:100%}
+.dtitle{font-size:12px;font-weight:700;margin-bottom:8px}
+.dinp{border:1px solid #bbb;border-radius:6px;padding:6px 8px;font-size:9px;
+  width:100%;color:#333;margin-bottom:10px}
+.dact{display:flex;justify-content:flex-end;gap:8px}
+.dbtn{font-size:9px;font-weight:700;color:#1976D2;padding:3px 6px;border-radius:4px}
+.dbtn.c{color:#888}
 </style>
 </head>
 <body>
-<h1>🎨 Doodle App – Screen Previews</h1>
-<p class="subtitle">Minimalist Task Manager · Topics Feature · Material 3 · Kotlin + Jetpack Compose</p>
+<h1>🎨 Doodle App – Preview</h1>
+<p class="sub">Topic pill buttons · Tap to open topic screen · Material 3 · Kotlin + Compose</p>
 
-<!-- ═══════════════════════════════════════════════════════ TASKS SCREENS -->
-<div class="section-title">📋 Tasks Screen</div>
+<!-- TASKS SCREEN -->
+<div class="sec">📋 Tasks Screen</div>
 <div class="grid">
 
-<!-- Tasks Light with Topics -->
-<div class="screen-wrap">
-  <div class="screen-label">Tasks + Topics · Light</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span><div class="icon-btn">⚙️</div></div>
-    <div class="content">
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Buy groceries from supermarket</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Call dentist and schedule</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Pay electricity bill</span></div>
-      <div class="topics-header">
-        <span class="topics-header-label">Topics</span>
-        <span class="topics-header-btn">+ Add Topic</span>
+<!-- Light + topics pills -->
+<div class="wrap"><div class="lbl">Tasks + Topic Pills · Light</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="content">
+    <div class="tc"><div class="cb"></div><span class="tt">Buy groceries from supermarket</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Call dentist and schedule appt</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Pay electricity bill online</span></div>
+    <div class="pill-section">
+      <span class="pill-label">TOPICS</span>
+      <div class="pill-row">
+        <div class="pill active">📚 Studies</div>
+        <div class="pill active">💼 Work</div>
+        <div class="pill active">🏠 Home</div>
+        <div class="pill add">+ New Topic</div>
       </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">📚 Studies</span><span class="topic-count">2</span><span class="topic-add-btn">+</span></div>
-        <div class="topic-divider"></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Read chapter 5 – Physics</span></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Complete math assignment</span></div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">💼 Work</span><span class="topic-count">1</span><span class="topic-add-btn">+</span></div>
-        <div class="topic-divider"></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Send project update email</span></div>
-      </div>
-      <div class="fab">+</div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item active"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
+    <div class="fab">+</div>
   </div>
-</div>
-
-<!-- Tasks Dark with Topics -->
-<div class="screen-wrap">
-  <div class="screen-label">Tasks + Topics · Dark</div>
-  <div class="phone dark">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span><div class="icon-btn">⚙️</div></div>
-    <div class="content">
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Buy groceries from supermarket</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Call dentist and schedule</span></div>
-      <div class="topics-header">
-        <span class="topics-header-label" style="color:#90CAF9">Topics</span>
-        <span class="topics-header-btn" style="color:#90CAF9">+ Add Topic</span>
-      </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">📚 Studies</span><span class="topic-count">2</span><span class="topic-add-btn" style="color:#90CAF9">+</span></div>
-        <div class="topic-divider"></div>
-        <div class="topic-task-row"><div class="mini-checkbox" style="border-color:#90CAF9"></div><span class="topic-task-text">Read chapter 5 – Physics</span></div>
-        <div class="topic-task-row"><div class="mini-checkbox" style="border-color:#90CAF9"></div><span class="topic-task-text">Complete math assignment</span></div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">🏠 Home</span><span class="topic-count">1</span><span class="topic-add-btn" style="color:#90CAF9">+</span></div>
-        <div class="topic-divider"></div>
-        <div class="topic-task-row"><div class="mini-checkbox" style="border-color:#90CAF9"></div><span class="topic-task-text">Fix kitchen shelf</span></div>
-      </div>
-      <div class="fab" style="background:#90CAF9;color:#121212">+</div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item active" style="color:#90CAF9"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
   </div>
-</div>
+</div></div>
 
-<!-- Topics Only (no general tasks) -->
-<div class="screen-wrap">
-  <div class="screen-label">Topics Only</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span><div class="icon-btn">⚙️</div></div>
-    <div class="content">
-      <div class="topics-header">
-        <span class="topics-header-label">Topics</span>
-        <span class="topics-header-btn">+ Add Topic</span>
+<!-- Dark + topics pills -->
+<div class="wrap"><div class="lbl">Tasks + Topic Pills · Dark</div>
+<div class="phone dark">
+  <div class="sb">9:41</div>
+  <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="content">
+    <div class="tc"><div class="cb"></div><span class="tt">Buy groceries from supermarket</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Call dentist and schedule appt</span></div>
+    <div class="pill-section">
+      <span class="pill-label" style="color:#666">TOPICS</span>
+      <div class="pill-row">
+        <div class="pill active">📚 Studies</div>
+        <div class="pill active">🛒 Shopping</div>
+        <div class="pill active">💪 Fitness</div>
+        <div class="pill add">+ New Topic</div>
       </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">📚 Studies</span><span class="topic-count">3</span><span class="topic-add-btn">+</span></div>
-        <div class="topic-divider"></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Read chapter 5 – Physics</span></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Complete math assignment</span></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Revise chemistry notes</span></div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">🛒 Shopping</span><span class="topic-count">2</span><span class="topic-add-btn">+</span></div>
-        <div class="topic-divider"></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Eggs, milk, bread</span></div>
-        <div class="topic-task-row"><div class="mini-checkbox"></div><span class="topic-task-text">Shampoo &amp; soap</span></div>
-      </div>
-      <div class="topic-card">
-        <div class="topic-header"><span class="topic-name">💪 Fitness</span><span class="topic-count">0</span><span class="topic-add-btn">+</span></div>
-        <div class="topic-empty-text">No tasks yet — tap + to add one</div>
-      </div>
-      <div class="fab">+</div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item active"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
+    <div class="fab" style="background:#90CAF9;color:#121212">+</div>
   </div>
-</div>
-
-<!-- Empty State -->
-<div class="screen-wrap">
-  <div class="screen-label">Empty State</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span><div class="icon-btn">⚙️</div></div>
-    <div class="content">
-      <div class="empty-state">
-        <div class="empty-icon">📝</div>
-        <div class="empty-title">No tasks yet.</div>
-        <div class="empty-desc">If something needs to be done, add it.</div>
-      </div>
-      <div class="fab">+</div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item active"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
   </div>
-</div>
+</div></div>
 
-<!-- Swipe to Complete -->
-<div class="screen-wrap">
-  <div class="screen-label">Swipe → Complete</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span><div class="icon-btn">⚙️</div></div>
-    <div class="content">
-      <div style="position:relative;border-radius:9px;overflow:hidden;flex-shrink:0">
-        <div class="swipe-hint">
-          <span style="color:white;font-size:16px">✓</span>
-        </div>
-        <div class="task-card" style="transform:translateX(42%);position:relative;z-index:2">
-          <div class="checkbox"></div><span class="task-text">Buy groceries from supermarket</span>
-        </div>
+<!-- Only topics, no general tasks -->
+<div class="wrap"><div class="lbl">Topics Only</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="content">
+    <div class="empty" style="flex:0;padding:20px 0 16px">
+      <div class="et" style="color:#ccc;font-size:11px">No general tasks yet</div>
+    </div>
+    <div class="pill-section">
+      <span class="pill-label">TOPICS</span>
+      <div class="pill-row">
+        <div class="pill active">📚 Studies</div>
+        <div class="pill active">💼 Work</div>
+        <div class="pill active">🛒 Shopping</div>
+        <div class="pill active">🏠 Home</div>
+        <div class="pill add">+ New Topic</div>
       </div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Call dentist and schedule</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Pay electricity bill</span></div>
-      <div class="fab">+</div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item active"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
+    <div class="fab">+</div>
   </div>
-</div>
-
-<!-- Add Task in Topic Dialog -->
-<div class="screen-wrap">
-  <div class="screen-label">Add Task to Topic</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span></div>
-    <div class="content" style="position:relative">
-      <div class="task-card" style="opacity:.3"><div class="checkbox"></div><span class="task-text">Buy groceries</span></div>
-      <div class="topic-card" style="opacity:.3">
-        <div class="topic-header"><span class="topic-name">📚 Studies</span><span class="topic-add-btn">+</span></div>
-      </div>
-      <div class="dialog-overlay">
-        <div class="dialog">
-          <div class="dialog-title">New task in "Studies"</div>
-          <input class="dialog-input" value="Write essay outline" readonly/>
-          <div class="dialog-actions">
-            <span class="btn cancel">Cancel</span>
-            <span class="btn">Add</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item active"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
   </div>
-</div>
+</div></div>
 
-</div><!-- end grid -->
+<!-- Swipe to complete -->
+<div class="wrap"><div class="lbl">Swipe → Complete</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="content">
+    <div style="position:relative;height:38px;flex-shrink:0">
+      <div class="swipe-bg"><span style="color:#fff;font-size:15px">✓</span></div>
+      <div class="tc" style="position:relative;z-index:2;transform:translateX(40%);height:38px">
+        <div class="cb"></div><span class="tt">Buy groceries</span>
+      </div>
+    </div>
+    <div class="tc"><div class="cb"></div><span class="tt">Call dentist</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Pay electricity bill</span></div>
+    <div class="pill-section">
+      <span class="pill-label">TOPICS</span>
+      <div class="pill-row">
+        <div class="pill active">📚 Studies</div>
+        <div class="pill active">💼 Work</div>
+        <div class="pill add">+ New Topic</div>
+      </div>
+    </div>
+    <div class="fab">+</div>
+  </div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
+  </div>
+</div></div>
 
-<!-- ═══════════════════════════════════════════════════════ COMPLETED SCREEN -->
-<div class="section-title">✅ Completed Screen</div>
+</div><!-- end tasks grid -->
+
+<!-- TOPIC DETAIL SCREEN -->
+<div class="sec">📚 Topic Detail Screen (after tapping a pill)</div>
 <div class="grid">
 
-<div class="screen-wrap">
-  <div class="screen-label">Completed · No Topics</div>
-  <div class="phone green">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Completed</span></div>
-    <div class="content">
-      <div class="task-card"><div class="checkbox checked" style="background:#388E3C;border-color:#388E3C"></div><span class="task-text done">Send project report</span></div>
-      <div class="task-card"><div class="checkbox checked" style="background:#388E3C;border-color:#388E3C"></div><span class="task-text done">Clean the kitchen</span></div>
-      <div class="task-card"><div class="checkbox checked" style="background:#388E3C;border-color:#388E3C"></div><span class="task-text done">Reply to all pending emails</span></div>
-      <div class="task-card"><div class="checkbox checked" style="background:#388E3C;border-color:#388E3C"></div><span class="task-text done">Book flight tickets</span></div>
+<!-- Studies detail light -->
+<div class="wrap"><div class="lbl">Studies · Light</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><div class="ib">←</div><span class="t">📚 Studies</span></div>
+  <div class="tdc">
+    <div class="tc"><div class="cb"></div><span class="tt">Read chapter 5 – Physics</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Complete math assignment</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Revise chemistry notes</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Write essay outline for English</span></div>
+    <div class="fab">+</div>
+  </div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
+  </div>
+</div></div>
+
+<!-- Work detail dark -->
+<div class="wrap"><div class="lbl">Work · Dark</div>
+<div class="phone dark">
+  <div class="sb">9:41</div>
+  <div class="tb"><div class="ib">←</div><span class="t">💼 Work</span></div>
+  <div class="tdc">
+    <div class="tc"><div class="cb"></div><span class="tt">Send project update email</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Review pull request #42</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Prepare weekly report slides</span></div>
+    <div class="fab" style="background:#90CAF9;color:#121212">+</div>
+  </div>
+  <div class="bn">
+    <div class="ni on" style="color:#90CAF9"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
+  </div>
+</div></div>
+
+<!-- Empty topic -->
+<div class="wrap"><div class="lbl">Empty Topic</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><div class="ib">←</div><span class="t">💪 Fitness</span></div>
+  <div class="tdc">
+    <div class="empty">
+      <div class="ei">🏋️</div>
+      <div class="et">No tasks yet</div>
+      <div class="ed">Tap + to add your first task</div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item active" style="color:#388E3C"><span class="nav-icon">✓</span>Completed</div>
+    <div class="fab">+</div>
+  </div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
+  </div>
+</div></div>
+
+<!-- Add task dialog in topic -->
+<div class="wrap"><div class="lbl">Add Task to Topic</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><div class="ib">←</div><span class="t">📚 Studies</span></div>
+  <div class="tdc" style="position:relative">
+    <div class="tc" style="opacity:.25"><div class="cb"></div><span class="tt">Read chapter 5</span></div>
+    <div class="tc" style="opacity:.25"><div class="cb"></div><span class="tt">Math assignment</span></div>
+    <div class="dov">
+      <div class="dlg">
+        <div class="dtitle">New task in "Studies"</div>
+        <input class="dinp" value="Watch lecture on thermodynamics" readonly/>
+        <div class="dact">
+          <span class="dbtn c">Cancel</span>
+          <span class="dbtn">Add</span>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+  <div class="bn">
+    <div class="ni on"><span class="ni-ic">☰</span>Tasks</div>
+    <div class="ni"><span class="ni-ic">✓</span>Completed</div>
+  </div>
+</div></div>
 
-</div><!-- end grid -->
+</div><!-- end topic detail grid -->
 
-<!-- ═══════════════════════════════════════════════════════ SETTINGS SCREEN -->
-<div class="section-title">⚙️ Settings Screen</div>
+<!-- SETTINGS -->
+<div class="sec">⚙️ Settings – Topics Toggle</div>
 <div class="grid">
 
-<!-- Settings with Topics ON -->
-<div class="screen-wrap">
-  <div class="screen-label">Settings · Topics ON</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><div class="icon-btn">←</div><span class="title">Settings</span></div>
-    <div class="settings-content">
-      <div>
-        <div class="s-section-title">Appearance</div>
-        <div style="font-size:9px;color:#888;margin-bottom:3px">Theme</div>
-        <div class="s-option sel">Light <div class="radio sel"></div></div>
-        <div class="s-option">Dark <div class="radio"></div></div>
-        <div class="s-option">Follow System <div class="radio"></div></div>
-      </div>
-      <div>
-        <div style="font-size:9px;color:#888;margin-bottom:3px">Accent Color</div>
-        <div class="s-option sel">Blue <div class="radio sel"></div></div>
-        <div class="s-option">Green <div class="radio"></div></div>
-        <div class="s-option">Purple <div class="radio"></div></div>
-      </div>
-      <div>
-        <div class="s-section-title">Features</div>
-        <div class="s-toggle-row">
-          <div>
-            <div class="s-toggle-label">Topics</div>
-            <div class="s-toggle-desc">Show topic sections below tasks</div>
-          </div>
-          <div class="toggle-on"></div>
-        </div>
+<div class="wrap"><div class="lbl">Topics ON</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><div class="ib">←</div><span class="t">Settings</span></div>
+  <div class="sc">
+    <div><div class="st">Appearance</div>
+      <div class="so s">Light <div class="rd s"></div></div>
+      <div class="so">Dark <div class="rd"></div></div>
+      <div class="so">Follow System <div class="rd"></div></div>
+    </div>
+    <div><div class="st">Features</div>
+      <div class="tog-row">
+        <div><div class="tog-l">Topics</div>
+          <div class="tog-d">Show topic pills below tasks</div></div>
+        <div class="tog-on"></div>
       </div>
     </div>
   </div>
-</div>
+</div></div>
 
-<!-- Settings with Topics OFF -->
-<div class="screen-wrap">
-  <div class="screen-label">Settings · Topics OFF</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><div class="icon-btn">←</div><span class="title">Settings</span></div>
-    <div class="settings-content">
-      <div>
-        <div class="s-section-title">Appearance</div>
-        <div style="font-size:9px;color:#888;margin-bottom:3px">Theme</div>
-        <div class="s-option">Light <div class="radio"></div></div>
-        <div class="s-option sel">Dark <div class="radio sel"></div></div>
-        <div class="s-option">Follow System <div class="radio"></div></div>
-      </div>
-      <div>
-        <div style="font-size:9px;color:#888;margin-bottom:3px">Accent Color</div>
-        <div class="s-option">Blue <div class="radio"></div></div>
-        <div class="s-option sel">Purple <div class="radio sel"></div></div>
-        <div class="s-option">Green <div class="radio"></div></div>
-      </div>
-      <div>
-        <div class="s-section-title">Features</div>
-        <div class="s-toggle-row">
-          <div>
-            <div class="s-toggle-label">Topics</div>
-            <div class="s-toggle-desc">Show topic sections below tasks</div>
-          </div>
-          <div class="toggle-off"></div>
-        </div>
+<div class="wrap"><div class="lbl">Topics OFF</div>
+<div class="phone">
+  <div class="sb">9:41</div>
+  <div class="tb"><div class="ib">←</div><span class="t">Settings</span></div>
+  <div class="sc">
+    <div><div class="st">Appearance</div>
+      <div class="so">Light <div class="rd"></div></div>
+      <div class="so s">Dark <div class="rd s"></div></div>
+      <div class="so">Follow System <div class="rd"></div></div>
+    </div>
+    <div><div class="st">Features</div>
+      <div class="tog-row">
+        <div><div class="tog-l">Topics</div>
+          <div class="tog-d">Show topic pills below tasks</div></div>
+        <div class="tog-off"></div>
       </div>
     </div>
   </div>
-</div>
+</div></div>
 
-<!-- Tasks when Topics OFF -->
-<div class="screen-wrap">
-  <div class="screen-label">Tasks · Topics OFF</div>
-  <div class="phone">
-    <div class="status-bar">9:41</div>
-    <div class="top-bar"><span class="title">Tasks</span><div class="icon-btn">⚙️</div></div>
-    <div class="content">
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Buy groceries from supermarket</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Call dentist and schedule</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Pay electricity bill</span></div>
-      <div class="task-card"><div class="checkbox"></div><span class="task-text">Walk the dog in the evening</span></div>
-      <!-- No topics section -->
-      <div class="fab">+</div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item active"><span class="nav-icon">☰</span>Tasks</div>
-      <div class="nav-item"><span class="nav-icon">✓</span>Completed</div>
-    </div>
-  </div>
-</div>
-
-</div><!-- end grid -->
+</div><!-- end settings grid -->
 
 <br><br>
-<p style="text-align:center;color:#aaa;font-size:11px;padding-bottom:20px">
-  Doodle · Minimalist Task Manager · Material 3 · Kotlin + Jetpack Compose
+<p style="text-align:center;color:#bbb;font-size:10px;padding-bottom:20px">
+Doodle · Minimalist Task Manager · Material 3 · Kotlin + Jetpack Compose
 </p>
-</body>
-</html>
+</body></html>

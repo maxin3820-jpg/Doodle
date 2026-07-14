@@ -1,19 +1,21 @@
 package com.doodle.app.ui.screens
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -73,9 +75,9 @@ fun TasksScreen(
                         items = uiState.activeTasks,
                         key = { it.id }
                     ) { task ->
-                        TaskCard(
+                        SwipeToCompleteTaskCard(
                             task = task,
-                            onCheckedChange = { viewModel.completeTask(task) },
+                            onComplete = { viewModel.completeTask(task) },
                             onLongClick = { viewModel.showEditDialog(task) },
                             modifier = Modifier.animateItem()
                         )
@@ -120,6 +122,68 @@ fun TasksScreen(
                 }
             )
         }
+    }
+}
+
+// Wraps TaskCard with swipe-to-complete gesture (swipe right only).
+// The existing checkbox still works exactly as before.
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun SwipeToCompleteTaskCard(
+    task: Task,
+    onComplete: () -> Unit,
+    onLongClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.StartToEnd) {
+                onComplete()
+                true
+            } else {
+                false
+            }
+        },
+        // Require swiping at least 40% of the width to trigger
+        positionalThreshold = { totalDistance -> totalDistance * 0.4f }
+    )
+
+    SwipeToDismissBox(
+        state = dismissState,
+        modifier = modifier,
+        // Only allow swipe from start → end (left to right)
+        enableDismissFromStartToEnd = true,
+        enableDismissFromEndToStart = false,
+        backgroundContent = {
+            // Green background with check icon — only shown when swiping right
+            val color = when (dismissState.dismissDirection) {
+                SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.primary
+                else -> Color.Transparent
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(color)
+                    .padding(horizontal = 20.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                if (dismissState.dismissDirection == SwipeToDismissBoxValue.StartToEnd) {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = "Complete",
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
+        }
+    ) {
+        TaskCard(
+            task = task,
+            onCheckedChange = onComplete,
+            onLongClick = onLongClick
+        )
     }
 }
 

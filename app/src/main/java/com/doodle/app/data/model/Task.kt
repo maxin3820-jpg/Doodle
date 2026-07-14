@@ -1,5 +1,8 @@
 package com.doodle.app.data.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Task(
     val id: Long = 0,
     val title: String,

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -88,6 +89,7 @@ private data class DialogState(
     val taskToDelete: Task? = null
 )
 
+@Immutable
 data class TasksUiState(
     val activeTasks: List<Task> = emptyList(),
     val showAddDialog: Boolean = false,

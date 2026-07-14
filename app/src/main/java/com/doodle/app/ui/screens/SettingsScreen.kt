@@ -50,42 +50,44 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
+            // Options lists are remembered — no new list allocated on every recomposition
+            val themeOptions = remember {
+                listOf("Light" to ThemeMode.Light, "Dark" to ThemeMode.Dark, "Follow System" to ThemeMode.FollowSystem)
+            }
+            val accentOptions = remember {
+                listOf("Blue" to AccentColor.Blue, "Green" to AccentColor.Green, "Purple" to AccentColor.Purple,
+                    "Orange" to AccentColor.Orange, "Red" to AccentColor.Red, "Pink" to AccentColor.Pink)
+            }
+            val backgroundOptions = remember {
+                listOf("White" to BackgroundColor.White, "Black" to BackgroundColor.Black,
+                    "Light Gray" to BackgroundColor.LightGray, "Cream" to BackgroundColor.Cream,
+                    "Soft Blue" to BackgroundColor.SoftBlue, "Soft Green" to BackgroundColor.SoftGreen)
+            }
+            val fontFamilyOptions = remember {
+                listOf("Roboto" to FontFamily.Roboto, "Inter" to FontFamily.Inter,
+                    "Poppins" to FontFamily.Poppins, "Nunito" to FontFamily.Nunito, "Open Sans" to FontFamily.OpenSans)
+            }
+            val fontSizeOptions = remember {
+                listOf("Small" to FontSize.Small, "Medium" to FontSize.Medium,
+                    "Large" to FontSize.Large, "Extra Large" to FontSize.ExtraLarge)
+            }
+
             SettingsSection(title = stringResource(R.string.appearance)) {
                 SettingsOptionSelector(
                     title = stringResource(R.string.theme),
-                    options = listOf(
-                        stringResource(R.string.light) to ThemeMode.Light,
-                        stringResource(R.string.dark) to ThemeMode.Dark,
-                        stringResource(R.string.follow_system) to ThemeMode.FollowSystem
-                    ),
+                    options = themeOptions,
                     selectedOption = themeMode,
                     onOptionSelected = { viewModel.setThemeMode(it) }
                 )
-
                 SettingsOptionSelector(
                     title = stringResource(R.string.accent_color),
-                    options = listOf(
-                        "Blue" to AccentColor.Blue,
-                        "Green" to AccentColor.Green,
-                        "Purple" to AccentColor.Purple,
-                        "Orange" to AccentColor.Orange,
-                        "Red" to AccentColor.Red,
-                        "Pink" to AccentColor.Pink
-                    ),
+                    options = accentOptions,
                     selectedOption = accentColor,
                     onOptionSelected = { viewModel.setAccentColor(it) }
                 )
-
                 SettingsOptionSelector(
                     title = stringResource(R.string.background_color),
-                    options = listOf(
-                        "White" to BackgroundColor.White,
-                        "Black" to BackgroundColor.Black,
-                        "Light Gray" to BackgroundColor.LightGray,
-                        "Cream" to BackgroundColor.Cream,
-                        "Soft Blue" to BackgroundColor.SoftBlue,
-                        "Soft Green" to BackgroundColor.SoftGreen
-                    ),
+                    options = backgroundOptions,
                     selectedOption = backgroundColor,
                     onOptionSelected = { viewModel.setBackgroundColor(it) }
                 )
@@ -94,25 +96,13 @@ fun SettingsScreen(
             SettingsSection(title = stringResource(R.string.typography)) {
                 SettingsOptionSelector(
                     title = stringResource(R.string.font_family),
-                    options = listOf(
-                        "Roboto" to FontFamily.Roboto,
-                        "Inter" to FontFamily.Inter,
-                        "Poppins" to FontFamily.Poppins,
-                        "Nunito" to FontFamily.Nunito,
-                        "Open Sans" to FontFamily.OpenSans
-                    ),
+                    options = fontFamilyOptions,
                     selectedOption = fontFamily,
                     onOptionSelected = { viewModel.setFontFamily(it) }
                 )
-
                 SettingsOptionSelector(
                     title = stringResource(R.string.font_size),
-                    options = listOf(
-                        "Small" to FontSize.Small,
-                        "Medium" to FontSize.Medium,
-                        "Large" to FontSize.Large,
-                        "Extra Large" to FontSize.ExtraLarge
-                    ),
+                    options = fontSizeOptions,
                     selectedOption = fontSize,
                     onOptionSelected = { viewModel.setFontSize(it) }
                 )

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ class CompletedViewModel @Inject constructor(
     }
 }
 
+@Immutable
 data class CompletedUiState(
     val completedTasks: List<Task> = emptyList()
 )

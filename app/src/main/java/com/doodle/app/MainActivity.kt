@@ -63,6 +63,25 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    // Stable lambdas — remembered so Compose doesn't see new instances every frame
+    val onNavigateToTasks: () -> Unit = remember(navController) {
+        {
+            navController.navigate(Screen.Tasks.route) {
+                popUpTo(Screen.Tasks.route) { inclusive = true }
+            }
+        }
+    }
+    val onNavigateToCompleted: () -> Unit = remember(navController) {
+        {
+            navController.navigate(Screen.Completed.route) {
+                popUpTo(Screen.Tasks.route)
+            }
+        }
+    }
+    val onNavigateToSettings: () -> Unit = remember(navController) {
+        { navController.navigate(Screen.Settings.route) }
+    }
+
     Scaffold(
         bottomBar = {
             if (currentRoute != Screen.Settings.route) {
@@ -71,25 +90,13 @@ fun MainScreen() {
                         icon = { Icon(Icons.Default.List, contentDescription = null) },
                         label = { Text("Tasks") },
                         selected = currentRoute == Screen.Tasks.route,
-                        onClick = {
-                            if (currentRoute != Screen.Tasks.route) {
-                                navController.navigate(Screen.Tasks.route) {
-                                    popUpTo(Screen.Tasks.route) { inclusive = true }
-                                }
-                            }
-                        }
+                        onClick = onNavigateToTasks
                     )
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.CheckCircle, contentDescription = null) },
                         label = { Text("Completed") },
                         selected = currentRoute == Screen.Completed.route,
-                        onClick = {
-                            if (currentRoute != Screen.Completed.route) {
-                                navController.navigate(Screen.Completed.route) {
-                                    popUpTo(Screen.Tasks.route)
-                                }
-                            }
-                        }
+                        onClick = onNavigateToCompleted
                     )
                 }
             }
@@ -100,89 +107,7 @@ fun MainScreen() {
                 navController = navController,
                 startDestination = Screen.Tasks.route,
                 tasksContent = {
-                    TasksScreen(
-                        onNavigateToSettings = {
-                            navController.navigate(Screen.Settings.route)
-                        }
-                    )
-                },
-                completedContent = {
-                    CompletedScreen()
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun DoodleApp(
-    settingsViewModel: SettingsViewModel = hiltViewModel()
-) {
-    val themeMode by settingsViewModel.themeMode.collectAsStateWithLifecycle()
-    val accentColor by settingsViewModel.accentColor.collectAsStateWithLifecycle()
-    val backgroundColor by settingsViewModel.backgroundColor.collectAsStateWithLifecycle()
-    val fontFamily by settingsViewModel.fontFamily.collectAsStateWithLifecycle()
-    val fontSize by settingsViewModel.fontSize.collectAsStateWithLifecycle()
-
-    DoodleTheme(
-        themeMode = themeMode,
-        accentColor = accentColor,
-        backgroundColor = backgroundColor,
-        fontFamily = fontFamily,
-        fontSize = fontSize
-    ) {
-        MainScreen()
-    }
-}
-
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
-    Scaffold(
-        bottomBar = {
-            if (currentRoute != Screen.Settings.route) {
-                NavigationBar {
-                    NavigationBarItem(
-                        icon = { Icon(Icons.Default.List, contentDescription = null) },
-                        label = { Text("Tasks") },
-                        selected = currentRoute == Screen.Tasks.route,
-                        onClick = {
-                            if (currentRoute != Screen.Tasks.route) {
-                                navController.navigate(Screen.Tasks.route) {
-                                    popUpTo(Screen.Tasks.route) { inclusive = true }
-                                }
-                            }
-                        }
-                    )
-                    NavigationBarItem(
-                        icon = { Icon(Icons.Default.CheckCircle, contentDescription = null) },
-                        label = { Text("Completed") },
-                        selected = currentRoute == Screen.Completed.route,
-                        onClick = {
-                            if (currentRoute != Screen.Completed.route) {
-                                navController.navigate(Screen.Completed.route) {
-                                    popUpTo(Screen.Tasks.route)
-                                }
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            NavGraph(
-                navController = navController,
-                startDestination = Screen.Tasks.route,
-                tasksContent = {
-                    TasksScreen(
-                        onNavigateToSettings = {
-                            navController.navigate(Screen.Settings.route)
-                        }
-                    )
+                    TasksScreen(onNavigateToSettings = onNavigateToSettings)
                 },
                 completedContent = {
                     CompletedScreen()

@@ -77,6 +77,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material") // Material 2 for SwipeToDismiss
     // Only import the icons actually used — not the full extended set (saves ~2MB)
     implementation("androidx.compose.material:material-icons-core")
     

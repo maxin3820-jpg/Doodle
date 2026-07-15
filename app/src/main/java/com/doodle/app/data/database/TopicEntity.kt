@@ -10,3 +10,11 @@ data class TopicEntity(
     val name: String,
     val createdAt: Long = System.currentTimeMillis()
 )
+
+// Data class for topic with task count (used in queries with COUNT)
+data class TopicWithCount(
+    val id: Long,
+    val name: String,
+    val createdAt: Long,
+    val taskCount: Int
+)

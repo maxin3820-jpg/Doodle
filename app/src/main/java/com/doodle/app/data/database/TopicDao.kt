@@ -8,6 +8,16 @@ interface TopicDao {
 
     @Query("SELECT * FROM topics ORDER BY createdAt ASC")
     fun getAllTopics(): Flow<List<TopicEntity>>
+    
+    @Query("""
+        SELECT topics.id, topics.name, topics.createdAt, 
+               COUNT(CASE WHEN tasks.isCompleted = 0 THEN 1 END) as taskCount
+        FROM topics
+        LEFT JOIN tasks ON topics.id = tasks.topicId
+        GROUP BY topics.id
+        ORDER BY topics.createdAt ASC
+    """)
+    fun getAllTopicsWithCount(): Flow<List<TopicWithCount>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTopic(topic: TopicEntity): Long

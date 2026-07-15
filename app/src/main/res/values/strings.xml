@@ -32,7 +32,10 @@
     <string name="new_task_in_topic">New task in "%1$s"</string>
     <string name="delete_topic">Delete Topic</string>
     <string name="delete_topic_message">Delete "%1$s" and all its tasks?</string>
+    <string name="delete_topic_with_tasks">Delete "%1$s" and its %2$d task(s)?</string>
+    <string name="delete_topic_empty">Delete empty topic "%1$s"?</string>
     <string name="no_tasks_in_topic">No tasks yet</string>
+    <string name="no_tasks_in_topic_title">No tasks in "%1$s"</string>
     <string name="tap_plus_to_add">Tap + to add your first task</string>
     <string name="features">Features</string>
     <string name="topics_description">Show topic sections below tasks</string>

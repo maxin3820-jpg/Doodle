@@ -17,4 +17,7 @@ interface TopicDao {
 
     @Query("SELECT * FROM tasks WHERE topicId = :topicId AND isCompleted = 0 ORDER BY createdAt DESC")
     fun getActiveTasksForTopic(topicId: Long): Flow<List<TaskEntity>>
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE topicId = :topicId AND isCompleted = 0")
+    suspend fun getActiveTaskCountForTopic(topicId: Long): Int
 }

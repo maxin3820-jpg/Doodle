@@ -173,21 +173,21 @@ fun TasksScreen(
         }
 
         if (topicsUiState.showDeleteTopicDialog && topicsUiState.selectedTopic != null) {
+            val topic = topicsUiState.selectedTopic!!
+            val message = if (topic.taskCount > 0) {
+                stringResource(R.string.delete_topic_with_tasks, topic.name, topic.taskCount)
+            } else {
+                stringResource(R.string.delete_topic_empty, topic.name)
+            }
+            
             AlertDialog(
                 onDismissRequest = { topicsViewModel.hideDeleteTopicDialog() },
                 title = { Text(stringResource(R.string.delete_topic)) },
-                text = {
-                    Text(
-                        stringResource(
-                            R.string.delete_topic_message,
-                            topicsUiState.selectedTopic!!.name
-                        )
-                    )
-                },
+                text = { Text(message) },
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            topicsViewModel.deleteTopic(topicsUiState.selectedTopic!!)
+                            topicsViewModel.deleteTopic(topic)
                             topicsViewModel.hideDeleteTopicDialog()
                         },
                         colors = ButtonDefaults.textButtonColors(
@@ -229,7 +229,7 @@ fun TopicPillHeader(
         ) {
             topics.forEach { topic ->
                 TopicPill(
-                    name = topic.name,
+                    topic = topic,
                     onClick = { onTopicClick(topic) },
                     onLongClick = { onTopicLongClick(topic) }
                 )
@@ -256,24 +256,42 @@ fun TopicPillHeader(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopicPill(
-    name: String,
+    topic: Topic,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
+    val displayText = if (topic.taskCount > 0) {
+        "${topic.name} (${topic.taskCount})"
+    } else {
+        topic.name
+    }
+    
+    val containerColor = if (topic.taskCount == 0) {
+        MaterialTheme.colorScheme.surfaceVariant
+    } else {
+        MaterialTheme.colorScheme.primaryContainer
+    }
+    
+    val contentColor = if (topic.taskCount == 0) {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    } else {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    }
+    
     Surface(
         modifier = Modifier.combinedClickable(
             onClick = onClick,
             onLongClick = onLongClick
         ),
         shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.primaryContainer,
+        color = containerColor,
         tonalElevation = 0.dp
     ) {
         Text(
-            text = name,
+            text = displayText,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = contentColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp)

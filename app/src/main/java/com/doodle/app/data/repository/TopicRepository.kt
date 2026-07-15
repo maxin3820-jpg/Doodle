@@ -17,7 +17,12 @@ class TopicRepository @Inject constructor(
     private val taskDao: TaskDao          // needed for cascade delete
 ) {
     fun getAllTopics(): Flow<List<Topic>> =
-        topicDao.getAllTopics().map { list -> list.map { it.toTopic() } }
+        topicDao.getAllTopics().map { list -> 
+            list.map { entity ->
+                val count = topicDao.getActiveTaskCountForTopic(entity.id)
+                entity.toTopic(count)
+            }
+        }
 
     fun getActiveTasksForTopic(topicId: Long): Flow<List<Task>> =
         topicDao.getActiveTasksForTopic(topicId).map { list -> list.map { it.toTask() } }
@@ -31,7 +36,12 @@ class TopicRepository @Inject constructor(
         topicDao.deleteTopic(topic.toEntity())
     }
 
-    private fun TopicEntity.toTopic() = Topic(id = id, name = name, createdAt = createdAt)
+    private fun TopicEntity.toTopic(taskCount: Int = 0) = Topic(
+        id = id, 
+        name = name, 
+        createdAt = createdAt,
+        taskCount = taskCount
+    )
     private fun Topic.toEntity() = TopicEntity(id = id, name = name, createdAt = createdAt)
     private fun TaskEntity.toTask() = Task(
         id = id, title = title, isCompleted = isCompleted,

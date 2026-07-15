@@ -83,7 +83,9 @@ fun MainScreen() {
     }
     val onNavigateToTopic: (Long, String) -> Unit = remember(navController) {
         { topicId, topicName ->
-            navController.navigate(Screen.TopicDetail.createRoute(topicId, topicName))
+            navController.navigate(Screen.TopicDetail.createRoute(topicId, topicName)) {
+                launchSingleTop = true
+            }
         }
     }
 

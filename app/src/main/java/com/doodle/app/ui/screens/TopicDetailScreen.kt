@@ -38,11 +38,25 @@ fun TopicDetailScreen(
 ) {
     val tasks by viewModel.getTasksForTopic(topicId).collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var isInitialLoad by remember { mutableStateOf(true) }
+    
+    // Track initial load state
+    LaunchedEffect(tasks) {
+        if (tasks.isNotEmpty() || !isInitialLoad) {
+            isInitialLoad = false
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(topicName) },
+                title = { 
+                    Text(
+                        text = topicName,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -74,10 +88,19 @@ fun TopicDetailScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            if (tasks.isEmpty()) {
+            if (isInitialLoad && tasks.isEmpty()) {
+                // Show loading indicator on first load
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (tasks.isEmpty()) {
+                // Show empty state after loading
                 com.doodle.app.ui.components.EmptyState(
-                    title = "No tasks in $topicName",
-                    description = "Tap + to add a task",
+                    title = stringResource(R.string.no_tasks_in_topic_title, topicName),
+                    description = stringResource(R.string.tap_plus_to_add),
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else {
@@ -155,19 +178,20 @@ private fun TopicDetailTaskCard(
     modifier: Modifier = Modifier
 ) {
     // Swipe right to complete — same pattern as main tasks screen
-    // Use key to reset state when task changes
-    // Use key() to reset dismissState when task.id changes — ensures swipe state is fresh
-    val dismissState = key(task.id) {
-        rememberSwipeToDismissBoxState(
-            confirmValueChange = { value ->
-                if (value == SwipeToDismissBoxValue.StartToEnd) { 
-                    onComplete()
-                    true
-                }
-                else false
-            },
-            positionalThreshold = { it * 0.4f }
-        )
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.StartToEnd) { 
+                onComplete()
+                true
+            }
+            else false
+        },
+        positionalThreshold = { it * 0.4f }
+    )
+
+    // Reset swipe state after task completion animation finishes
+    LaunchedEffect(task.id) {
+        dismissState.snapTo(SwipeToDismissBoxValue.Settled)
     }
 
     SwipeToDismissBox(
@@ -213,7 +237,7 @@ private fun TopicDetailTaskCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    checked = false,
+                    checked = task.isCompleted,
                     onCheckedChange = { onComplete() }
                 )
                 Spacer(modifier = Modifier.width(12.dp))

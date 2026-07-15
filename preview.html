@@ -6,44 +6,76 @@
 <title>Doodle – Preview</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;background:#e8eaf0;padding:36px 16px;color:#212121}
-h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
-.sub{text-align:center;color:#888;font-size:12px;margin-bottom:32px}
-.sec{text-align:center;font-size:13px;font-weight:700;color:#555;margin:36px 0 18px;
-  text-transform:uppercase;letter-spacing:1px}
+body{font-family:'Segoe UI',sans-serif;background:#e8eaf0;padding:36px 16px}
+h1{text-align:center;font-size:24px;margin-bottom:5px;color:#1976D2}
+.sub{text-align:center;color:#999;font-size:12px;margin-bottom:32px}
+.sec{text-align:center;font-size:12px;font-weight:700;color:#666;
+  margin:36px 0 18px;text-transform:uppercase;letter-spacing:1px}
 .grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
 .wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
 .lbl{font-size:10px;font-weight:700;color:#777;text-transform:uppercase;letter-spacing:.5px}
-/* Phone shell */
+
+/* Phone */
 .phone{width:250px;height:520px;background:#fff;border-radius:32px;
   border:7px solid #1a1a1a;box-shadow:0 14px 40px rgba(0,0,0,.2);
   overflow:hidden;display:flex;flex-direction:column;position:relative}
 .phone.dark{background:#121212;color:#e0e0e0;border-color:#000}
+
+/* Status bar */
 .sb{height:16px;display:flex;justify-content:flex-end;align-items:center;
   padding:0 12px;font-size:7px;color:#aaa;flex-shrink:0;background:inherit}
+
+/* Top app bar */
 .tb{height:44px;display:flex;align-items:center;padding:0 4px 0 14px;
-  font-size:13px;font-weight:600;flex-shrink:0;background:inherit;
-  border-bottom:1px solid rgba(0,0,0,.05)}
-.dark .tb{border-bottom-color:rgba(255,255,255,.06)}
-.tb .t{flex:1}.ib{width:32px;height:32px;display:flex;align-items:center;
-  justify-content:center;border-radius:50%;font-size:14px;color:#666}
+  font-size:13px;font-weight:600;flex-shrink:0;background:inherit}
+.tb .t{flex:1}
+.ib{width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;font-size:14px;color:#666}
 .dark .ib{color:#aaa}
+
+/* ── TOPIC PILL HEADER ── */
+.pill-header{
+  flex-shrink:0;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.07);
+  padding:8px 14px 10px;
+  display:flex;gap:7px;align-items:center;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.dark .pill-header{background:#1a1a1a;border-bottom-color:rgba(255,255,255,.07)}
+
+.pill{
+  border-radius:50px;padding:5px 13px;font-size:10px;font-weight:600;
+  white-space:nowrap;flex-shrink:0;cursor:pointer;
+  background:rgba(25,118,210,.13);color:#1976D2;
+}
+.dark .pill{background:rgba(144,202,249,.13);color:#90CAF9}
+
+.pill-add{
+  border-radius:50px;padding:5px 12px;font-size:10px;font-weight:600;
+  white-space:nowrap;flex-shrink:0;
+  border:1.5px solid rgba(25,118,210,.4);color:#1976D2;background:transparent;
+}
+.dark .pill-add{border-color:rgba(144,202,249,.35);color:#90CAF9}
+
+/* Content */
 .content{flex:1;overflow:hidden;padding:10px;display:flex;flex-direction:column;gap:8px;position:relative}
+
 /* Task card */
 .tc{background:#fff;border-radius:10px;padding:10px 12px;display:flex;
   align-items:center;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);font-size:11px;flex-shrink:0}
 .dark .tc{background:#1e1e1e;box-shadow:0 1px 4px rgba(0,0,0,.4)}
-.cb{width:14px;height:14px;border-radius:3px;border:1.8px solid #1976D2;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center}
-.cb.done{background:#1976D2}.cb.done::after{content:'✓';color:#fff;font-size:8px;font-weight:700}
+.cb{width:14px;height:14px;border-radius:3px;border:1.8px solid #1976D2;flex-shrink:0}
+.cb.done{background:#1976D2}.cb.done::after{content:'✓';color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center}
 .dark .cb{border-color:#90CAF9}.dark .cb.done{background:#90CAF9}
-.dark .cb.done::after{color:#121212}
 .tt{flex:1;line-height:1.3;color:#212121}.dark .tt{color:#e0e0e0}
 .tt.s{text-decoration:line-through;opacity:.4}
+
 /* FAB */
 .fab{position:absolute;bottom:52px;right:11px;width:40px;height:40px;border-radius:12px;
   background:#1976D2;color:#fff;display:flex;align-items:center;justify-content:center;
   font-size:18px;box-shadow:0 3px 10px rgba(25,118,210,.4);z-index:10}
+
 /* Bottom nav */
 .bn{height:48px;border-top:1px solid rgba(0,0,0,.07);display:flex;flex-shrink:0;background:inherit}
 .dark .bn{border-top-color:rgba(255,255,255,.07)}
@@ -51,27 +83,20 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   justify-content:center;gap:1px;font-size:7px;color:#aaa}
 .ni.on{color:#1976D2}.dark .ni.on{color:#90CAF9}
 .ni-ic{font-size:14px}
-/* Topic pill row */
-.pill-section{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
-.pill-label{font-size:9px;color:#999;letter-spacing:.3px}
-.pill-row{display:flex;flex-wrap:nowrap;gap:6px;overflow:hidden}
-.pill{border-radius:50px;padding:5px 12px;font-size:10px;font-weight:600;
-  white-space:nowrap;cursor:pointer;flex-shrink:0}
-.pill.active{background:rgba(25,118,210,.15);color:#1976D2}
-.dark .pill.active{background:rgba(144,202,249,.15);color:#90CAF9}
-.pill.add{background:rgba(0,0,0,.06);color:#888}
-.dark .pill.add{background:rgba(255,255,255,.08);color:#aaa}
+
 /* Empty */
 .empty{flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:6px;text-align:center;color:#aaa;padding:16px}
-.ei{font-size:30px;opacity:.3}.et{font-size:12px;font-weight:600}.ed{font-size:9px;opacity:.7}
-/* Topic detail screen */
+  justify-content:center;gap:6px;text-align:center;color:#bbb;padding:16px}
+.ei{font-size:28px;opacity:.3}.et{font-size:11px;font-weight:600}.ed{font-size:9px;opacity:.7}
+
+/* Topic detail */
 .tdc{flex:1;overflow:hidden;padding:10px;display:flex;flex-direction:column;gap:8px;position:relative}
+
 /* Settings */
 .sc{flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:10px}
-.st{font-size:9px;font-weight:700;color:#1976D2;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
-.so{background:#f5f5f5;border-radius:7px;padding:6px 10px;display:flex;
-  align-items:center;justify-content:space-between;font-size:9px;margin-bottom:2px;color:#555}
+.st{font-size:9px;font-weight:700;color:#1976D2;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.so{background:#f5f5f5;border-radius:7px;padding:6px 10px;display:flex;align-items:center;
+  justify-content:space-between;font-size:9px;margin-bottom:2px;color:#555}
 .so.s{background:rgba(25,118,210,.1);color:#1976D2;font-weight:700}
 .rd{width:10px;height:10px;border-radius:50%;border:1.8px solid #ccc;flex-shrink:0}
 .rd.s{border-color:#1976D2;background:radial-gradient(circle,#1976D2 42%,transparent 42%)}
@@ -83,10 +108,12 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
 .tog-on::after{content:'';position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
 .tog-off{width:26px;height:14px;background:#ccc;border-radius:7px;position:relative;flex-shrink:0}
 .tog-off::after{content:'';position:absolute;left:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
-/* swipe */
+
+/* Swipe */
 .swipe-bg{position:absolute;left:0;top:0;bottom:0;width:44%;background:#1976D2;
   border-radius:10px;display:flex;align-items:center;padding-left:11px;z-index:1}
-/* dialog */
+
+/* Dialog */
 .dov{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;
   align-items:center;justify-content:center;z-index:20;padding:16px}
 .dlg{background:#fff;border-radius:14px;padding:16px;width:100%}
@@ -99,31 +126,29 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
 </style>
 </head>
 <body>
-<h1>🎨 Doodle App – Preview</h1>
-<p class="sub">Topic pill buttons · Tap to open topic screen · Material 3 · Kotlin + Compose</p>
+<h1>🎨 Doodle – Screen Previews</h1>
+<p class="sub">Topic pills pinned in header · Tap to open topic screen · Material 3</p>
 
 <!-- TASKS SCREEN -->
 <div class="sec">📋 Tasks Screen</div>
 <div class="grid">
 
-<!-- Light + topics pills -->
-<div class="wrap"><div class="lbl">Tasks + Topic Pills · Light</div>
+<!-- Light -->
+<div class="wrap"><div class="lbl">Light · With Topics</div>
 <div class="phone">
   <div class="sb">9:41</div>
   <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="pill-header">
+    <div class="pill">📚 Studies</div>
+    <div class="pill">💼 Work</div>
+    <div class="pill">🏠 Home</div>
+    <div class="pill-add">+ New</div>
+  </div>
   <div class="content">
     <div class="tc"><div class="cb"></div><span class="tt">Buy groceries from supermarket</span></div>
     <div class="tc"><div class="cb"></div><span class="tt">Call dentist and schedule appt</span></div>
     <div class="tc"><div class="cb"></div><span class="tt">Pay electricity bill online</span></div>
-    <div class="pill-section">
-      <span class="pill-label">TOPICS</span>
-      <div class="pill-row">
-        <div class="pill active">📚 Studies</div>
-        <div class="pill active">💼 Work</div>
-        <div class="pill active">🏠 Home</div>
-        <div class="pill add">+ New Topic</div>
-      </div>
-    </div>
+    <div class="tc"><div class="cb"></div><span class="tt">Walk the dog in the evening</span></div>
     <div class="fab">+</div>
   </div>
   <div class="bn">
@@ -132,23 +157,21 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   </div>
 </div></div>
 
-<!-- Dark + topics pills -->
-<div class="wrap"><div class="lbl">Tasks + Topic Pills · Dark</div>
+<!-- Dark -->
+<div class="wrap"><div class="lbl">Dark · With Topics</div>
 <div class="phone dark">
   <div class="sb">9:41</div>
   <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="pill-header">
+    <div class="pill">📚 Studies</div>
+    <div class="pill">🛒 Shopping</div>
+    <div class="pill">💪 Fitness</div>
+    <div class="pill-add">+ New</div>
+  </div>
   <div class="content">
     <div class="tc"><div class="cb"></div><span class="tt">Buy groceries from supermarket</span></div>
     <div class="tc"><div class="cb"></div><span class="tt">Call dentist and schedule appt</span></div>
-    <div class="pill-section">
-      <span class="pill-label" style="color:#666">TOPICS</span>
-      <div class="pill-row">
-        <div class="pill active">📚 Studies</div>
-        <div class="pill active">🛒 Shopping</div>
-        <div class="pill active">💪 Fitness</div>
-        <div class="pill add">+ New Topic</div>
-      </div>
-    </div>
+    <div class="tc"><div class="cb"></div><span class="tt">Pay electricity bill online</span></div>
     <div class="fab" style="background:#90CAF9;color:#121212">+</div>
   </div>
   <div class="bn">
@@ -157,25 +180,18 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   </div>
 </div></div>
 
-<!-- Only topics, no general tasks -->
-<div class="wrap"><div class="lbl">Topics Only</div>
+<!-- Topics OFF -->
+<div class="wrap"><div class="lbl">Topics OFF</div>
 <div class="phone">
   <div class="sb">9:41</div>
   <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <!-- no pill header -->
   <div class="content">
-    <div class="empty" style="flex:0;padding:20px 0 16px">
-      <div class="et" style="color:#ccc;font-size:11px">No general tasks yet</div>
-    </div>
-    <div class="pill-section">
-      <span class="pill-label">TOPICS</span>
-      <div class="pill-row">
-        <div class="pill active">📚 Studies</div>
-        <div class="pill active">💼 Work</div>
-        <div class="pill active">🛒 Shopping</div>
-        <div class="pill active">🏠 Home</div>
-        <div class="pill add">+ New Topic</div>
-      </div>
-    </div>
+    <div class="tc"><div class="cb"></div><span class="tt">Buy groceries from supermarket</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Call dentist and schedule appt</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Pay electricity bill online</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Walk the dog in the evening</span></div>
+    <div class="tc"><div class="cb"></div><span class="tt">Finish reading the book</span></div>
     <div class="fab">+</div>
   </div>
   <div class="bn">
@@ -189,8 +205,13 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
 <div class="phone">
   <div class="sb">9:41</div>
   <div class="tb"><span class="t">Tasks</span><div class="ib">⚙️</div></div>
+  <div class="pill-header">
+    <div class="pill">📚 Studies</div>
+    <div class="pill">💼 Work</div>
+    <div class="pill-add">+ New</div>
+  </div>
   <div class="content">
-    <div style="position:relative;height:38px;flex-shrink:0">
+    <div style="position:relative;height:38px;flex-shrink:0;border-radius:10px;overflow:hidden">
       <div class="swipe-bg"><span style="color:#fff;font-size:15px">✓</span></div>
       <div class="tc" style="position:relative;z-index:2;transform:translateX(40%);height:38px">
         <div class="cb"></div><span class="tt">Buy groceries</span>
@@ -198,14 +219,6 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
     </div>
     <div class="tc"><div class="cb"></div><span class="tt">Call dentist</span></div>
     <div class="tc"><div class="cb"></div><span class="tt">Pay electricity bill</span></div>
-    <div class="pill-section">
-      <span class="pill-label">TOPICS</span>
-      <div class="pill-row">
-        <div class="pill active">📚 Studies</div>
-        <div class="pill active">💼 Work</div>
-        <div class="pill add">+ New Topic</div>
-      </div>
-    </div>
     <div class="fab">+</div>
   </div>
   <div class="bn">
@@ -214,13 +227,13 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   </div>
 </div></div>
 
-</div><!-- end tasks grid -->
+</div>
 
 <!-- TOPIC DETAIL SCREEN -->
 <div class="sec">📚 Topic Detail Screen (after tapping a pill)</div>
 <div class="grid">
 
-<!-- Studies detail light -->
+<!-- Studies light -->
 <div class="wrap"><div class="lbl">Studies · Light</div>
 <div class="phone">
   <div class="sb">9:41</div>
@@ -238,7 +251,7 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   </div>
 </div></div>
 
-<!-- Work detail dark -->
+<!-- Work dark -->
 <div class="wrap"><div class="lbl">Work · Dark</div>
 <div class="phone dark">
   <div class="sb">9:41</div>
@@ -274,22 +287,19 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   </div>
 </div></div>
 
-<!-- Add task dialog in topic -->
-<div class="wrap"><div class="lbl">Add Task to Topic</div>
+<!-- Add task dialog -->
+<div class="wrap"><div class="lbl">Add Task Dialog</div>
 <div class="phone">
   <div class="sb">9:41</div>
   <div class="tb"><div class="ib">←</div><span class="t">📚 Studies</span></div>
   <div class="tdc" style="position:relative">
-    <div class="tc" style="opacity:.25"><div class="cb"></div><span class="tt">Read chapter 5</span></div>
-    <div class="tc" style="opacity:.25"><div class="cb"></div><span class="tt">Math assignment</span></div>
+    <div class="tc" style="opacity:.2"><div class="cb"></div><span class="tt">Read chapter 5</span></div>
+    <div class="tc" style="opacity:.2"><div class="cb"></div><span class="tt">Math assignment</span></div>
     <div class="dov">
       <div class="dlg">
         <div class="dtitle">New task in "Studies"</div>
         <input class="dinp" value="Watch lecture on thermodynamics" readonly/>
-        <div class="dact">
-          <span class="dbtn c">Cancel</span>
-          <span class="dbtn">Add</span>
-        </div>
+        <div class="dact"><span class="dbtn c">Cancel</span><span class="dbtn">Add</span></div>
       </div>
     </div>
   </div>
@@ -299,10 +309,10 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
   </div>
 </div></div>
 
-</div><!-- end topic detail grid -->
+</div>
 
 <!-- SETTINGS -->
-<div class="sec">⚙️ Settings – Topics Toggle</div>
+<div class="sec">⚙️ Settings</div>
 <div class="grid">
 
 <div class="wrap"><div class="lbl">Topics ON</div>
@@ -318,7 +328,7 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
     <div><div class="st">Features</div>
       <div class="tog-row">
         <div><div class="tog-l">Topics</div>
-          <div class="tog-d">Show topic pills below tasks</div></div>
+          <div class="tog-d">Show topic pills in header</div></div>
         <div class="tog-on"></div>
       </div>
     </div>
@@ -338,17 +348,17 @@ h1{text-align:center;font-size:24px;margin-bottom:6px;color:#1976D2}
     <div><div class="st">Features</div>
       <div class="tog-row">
         <div><div class="tog-l">Topics</div>
-          <div class="tog-d">Show topic pills below tasks</div></div>
+          <div class="tog-d">Show topic pills in header</div></div>
         <div class="tog-off"></div>
       </div>
     </div>
   </div>
 </div></div>
 
-</div><!-- end settings grid -->
+</div>
 
 <br><br>
-<p style="text-align:center;color:#bbb;font-size:10px;padding-bottom:20px">
+<p style="text-align:center;color:#ccc;font-size:10px;padding-bottom:20px">
 Doodle · Minimalist Task Manager · Material 3 · Kotlin + Jetpack Compose
 </p>
 </body></html>

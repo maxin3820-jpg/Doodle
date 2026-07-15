@@ -37,7 +37,9 @@ fun NavGraph(
             )
         ) { backStackEntry ->
             val topicId = backStackEntry.arguments?.getLong("topicId") ?: return@composable
-            val topicName = backStackEntry.arguments?.getString("topicName") ?: ""
+            // URL-decode the topic name back to its original value
+            val encodedName = backStackEntry.arguments?.getString("topicName") ?: ""
+            val topicName = java.net.URLDecoder.decode(encodedName, "UTF-8")
             TopicDetailScreen(
                 topicId = topicId,
                 topicName = topicName,
@@ -52,7 +54,10 @@ sealed class Screen(val route: String) {
     object Completed : Screen("completed")
     object Settings : Screen("settings")
     object TopicDetail : Screen("topic/{topicId}/{topicName}") {
-        fun createRoute(topicId: Long, topicName: String) =
-            "topic/$topicId/${topicName.replace("/", "-")}"
+        fun createRoute(topicId: Long, topicName: String): String {
+            // URL-encode the topic name so special chars don't corrupt the route
+            val encoded = java.net.URLEncoder.encode(topicName, "UTF-8")
+            return "topic/$topicId/$encoded"
+        }
     }
 }

@@ -50,7 +50,6 @@ fun TaskEditDialog(
     onDelete: () -> Unit
 ) {
     var text by remember { mutableStateOf(task.title) }
-    var showMenu by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,

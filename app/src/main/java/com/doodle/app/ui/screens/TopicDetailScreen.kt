@@ -54,8 +54,14 @@ fun TopicDetailScreen(
             FloatingActionButton(
                 onClick = {
                     // Find the topic and show add task dialog
+                    // If topic not loaded yet, create a temporary Topic object using passed topicId/name
                     val topic = uiState.topics.find { it.id == topicId }
-                    if (topic != null) viewModel.showAddTaskDialog(topic)
+                        ?: com.doodle.app.data.model.Topic(
+                            id = topicId,
+                            name = topicName,
+                            createdAt = System.currentTimeMillis()
+                        )
+                    viewModel.showAddTaskDialog(topic)
                 },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
@@ -69,22 +75,11 @@ fun TopicDetailScreen(
                 .padding(padding)
         ) {
             if (tasks.isEmpty()) {
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.no_tasks_in_topic),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = stringResource(R.string.tap_plus_to_add),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    )
-                }
+                com.doodle.app.ui.components.EmptyState(
+                    title = "No tasks in $topicName",
+                    description = "Tap + to add a task",
+                    modifier = Modifier.align(Alignment.Center)
+                )
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -160,13 +155,20 @@ private fun TopicDetailTaskCard(
     modifier: Modifier = Modifier
 ) {
     // Swipe right to complete — same pattern as main tasks screen
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.StartToEnd) { onComplete(); true }
-            else false
-        },
-        positionalThreshold = { it * 0.4f }
-    )
+    // Use key to reset state when task changes
+    // Use key() to reset dismissState when task.id changes — ensures swipe state is fresh
+    val dismissState = key(task.id) {
+        rememberSwipeToDismissBoxState(
+            confirmValueChange = { value ->
+                if (value == SwipeToDismissBoxValue.StartToEnd) { 
+                    onComplete()
+                    true
+                }
+                else false
+            },
+            positionalThreshold = { it * 0.4f }
+        )
+    }
 
     SwipeToDismissBox(
         state = dismissState,

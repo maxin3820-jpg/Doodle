@@ -1,6 +1,7 @@
 package com.doodle.app.ui.viewmodel
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doodle.app.data.model.Task
@@ -123,7 +124,7 @@ private data class TopicDialogState(
     val taskToDelete: Task? = null
 )
 
-@Immutable
+@Stable
 data class TopicsUiState(
     val topics: List<Topic> = emptyList(),
     val showAddTopicDialog: Boolean = false,

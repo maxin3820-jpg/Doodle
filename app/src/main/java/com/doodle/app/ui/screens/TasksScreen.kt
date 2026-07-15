@@ -62,7 +62,8 @@ fun TasksScreen(
                     }
                 )
 
-                // Topic pill header — only shown when topics are enabled
+                // Topic pill header — only shown when topics are enabled AND there are topics (or "add" button)
+                // Show header if: topics enabled (always shows at least "+ New Topic" button)
                 if (topicsEnabled) {
                     TopicPillHeader(
                         topics = topicsUiState.topics,
@@ -291,11 +292,19 @@ fun SwipeToCompleteTaskCard(
 ) {
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.StartToEnd) { onComplete(); true }
+            if (value == SwipeToDismissBoxValue.StartToEnd) { 
+                onComplete()
+                true
+            }
             else false
         },
         positionalThreshold = { it * 0.4f }
     )
+
+    // Reset swipe state after task completion animation finishes
+    LaunchedEffect(task.id) {
+        dismissState.snapTo(SwipeToDismissBoxValue.Settled)
+    }
 
     SwipeToDismissBox(
         state = dismissState,

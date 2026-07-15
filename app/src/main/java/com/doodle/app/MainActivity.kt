@@ -89,7 +89,9 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Settings.route) {
+            // Show bottom nav only on main screens (Tasks, Completed)
+            val showBottomNav = currentRoute == Screen.Tasks.route || currentRoute == Screen.Completed.route
+            if (showBottomNav) {
                 NavigationBar {
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.List, contentDescription = null) },

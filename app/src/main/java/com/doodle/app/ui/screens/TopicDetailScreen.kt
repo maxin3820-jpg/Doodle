@@ -6,6 +6,10 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.DismissValue
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.rememberDismissState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -119,7 +123,7 @@ fun TopicDetailScreen(
                             task = task,
                             onComplete = { viewModel.completeTask(task) },
                             onLongClick = { viewModel.showEditTaskDialog(task) },
-                            modifier = Modifier.animateItem()
+                            modifier = Modifier
                         )
                     }
                 }
@@ -177,10 +181,9 @@ private fun TopicDetailTaskCard(
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Swipe right to complete — same pattern as main tasks screen
-    val dismissState = rememberSwipeToDismissBoxState(
+    val dismissState = rememberDismissState(
         confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.StartToEnd) { 
+            if (value == DismissValue.DismissedToEnd) { 
                 onComplete()
                 true
             }
@@ -189,20 +192,21 @@ private fun TopicDetailTaskCard(
         positionalThreshold = { it * 0.4f }
     )
 
-    // Reset swipe state after task completion animation finishes
     LaunchedEffect(task.id) {
-        dismissState.snapTo(SwipeToDismissBoxValue.Settled)
+        if (dismissState.isDismissed(DismissDirection.StartToEnd)) {
+            dismissState.reset()
+        }
     }
 
-    SwipeToDismissBox(
+    SwipeToDismiss(
         state = dismissState,
         modifier = modifier,
-        enableDismissFromStartToEnd = true,
-        enableDismissFromEndToStart = false,
-        backgroundContent = {
-            val color = when (dismissState.dismissDirection) {
-                SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.primary
-                else -> Color.Transparent
+        directions = setOf(DismissDirection.StartToEnd),
+        background = {
+            val color = if (dismissState.dismissDirection == DismissDirection.StartToEnd) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                Color.Transparent
             }
             Box(
                 modifier = Modifier
@@ -212,7 +216,7 @@ private fun TopicDetailTaskCard(
                     .padding(horizontal = 20.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                if (dismissState.dismissDirection == SwipeToDismissBoxValue.StartToEnd) {
+                if (dismissState.dismissDirection == DismissDirection.StartToEnd) {
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
                         contentDescription = "Complete",
@@ -221,34 +225,35 @@ private fun TopicDetailTaskCard(
                     )
                 }
             }
-        }
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .combinedClickable(onClick = {}, onLongClick = onLongClick),
-            shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-        ) {
-            Row(
+        },
+        dismissContent = {
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .combinedClickable(onClick = {}, onLongClick = onLongClick),
+                shape = MaterialTheme.shapes.medium,
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                Checkbox(
-                    checked = task.isCompleted,
-                    onCheckedChange = { onComplete() }
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = task.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = task.isCompleted,
+                        onCheckedChange = { onComplete() }
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = task.title,
+                        style = MaterialTheme.typography.bodyLarge,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
-    }
+    )
 }

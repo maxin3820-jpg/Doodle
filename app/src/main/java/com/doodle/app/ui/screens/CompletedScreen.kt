@@ -57,7 +57,7 @@ fun CompletedScreen(
                         CompletedTaskCard(
                             task = task,
                             onCheckedChange = { viewModel.uncompleteTask(task) },
-                            modifier = Modifier.animateItem()
+                            modifier = Modifier
                         )
                     }
                 }

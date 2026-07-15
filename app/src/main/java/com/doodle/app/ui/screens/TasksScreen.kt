@@ -9,6 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.DismissValue
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.rememberDismissState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
@@ -114,7 +118,7 @@ fun TasksScreen(
                             task = task,
                             onComplete = { tasksViewModel.completeTask(task) },
                             onLongClick = { tasksViewModel.showEditDialog(task) },
-                            modifier = Modifier.animateItem()
+                            modifier = Modifier
                         )
                     }
                 }
@@ -308,9 +312,9 @@ fun SwipeToCompleteTaskCard(
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val dismissState = rememberSwipeToDismissBoxState(
+    val dismissState = rememberDismissState(
         confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.StartToEnd) { 
+            if (value == DismissValue.DismissedToEnd) { 
                 onComplete()
                 true
             }
@@ -321,18 +325,20 @@ fun SwipeToCompleteTaskCard(
 
     // Reset swipe state after task completion animation finishes
     LaunchedEffect(task.id) {
-        dismissState.snapTo(SwipeToDismissBoxValue.Settled)
+        if (dismissState.isDismissed(DismissDirection.StartToEnd)) {
+            dismissState.reset()
+        }
     }
 
-    SwipeToDismissBox(
+    SwipeToDismiss(
         state = dismissState,
         modifier = modifier,
-        enableDismissFromStartToEnd = true,
-        enableDismissFromEndToStart = false,
-        backgroundContent = {
-            val color = when (dismissState.dismissDirection) {
-                SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.primary
-                else -> Color.Transparent
+        directions = setOf(DismissDirection.StartToEnd),
+        background = {
+            val color = if (dismissState.dismissDirection == DismissDirection.StartToEnd) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                Color.Transparent
             }
             Box(
                 modifier = Modifier
@@ -342,7 +348,7 @@ fun SwipeToCompleteTaskCard(
                     .padding(horizontal = 20.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                if (dismissState.dismissDirection == SwipeToDismissBoxValue.StartToEnd) {
+                if (dismissState.dismissDirection == DismissDirection.StartToEnd) {
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
                         contentDescription = "Complete",
@@ -351,10 +357,11 @@ fun SwipeToCompleteTaskCard(
                     )
                 }
             }
+        },
+        dismissContent = {
+            TaskCard(task = task, onCheckedChange = onComplete, onLongClick = onLongClick)
         }
-    ) {
-        TaskCard(task = task, onCheckedChange = onComplete, onLongClick = onLongClick)
-    }
+    )
 }
 
 // ── Regular task card ──────────────────────────────────────────────────────────

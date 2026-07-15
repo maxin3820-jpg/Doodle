@@ -10,7 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val appSettings: AppSettings
+    private val appSettings: AppSettings,
+    private val taskRepository: com.doodle.app.data.repository.TaskRepository
 ) : ViewModel() {
 
     val themeMode: StateFlow<ThemeMode> = appSettings.themeMode
@@ -30,6 +31,15 @@ class SettingsViewModel @Inject constructor(
 
     val topicsEnabled: StateFlow<Boolean> = appSettings.topicsEnabled
         .stateIn(viewModelScope, SharingStarted.Eagerly, true)
+
+    // Task counts for statistics in settings
+    val activeTaskCount: StateFlow<Int> = taskRepository.getActiveTasks()
+        .map { it.size }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+
+    val completedTaskCount: StateFlow<Int> = taskRepository.getCompletedTasks()
+        .map { it.size }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
 
     fun setThemeMode(themeMode: ThemeMode) {
         viewModelScope.launch {

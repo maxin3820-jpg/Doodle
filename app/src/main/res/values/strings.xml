@@ -39,4 +39,7 @@
     <string name="tap_plus_to_add">Tap + to add your first task</string>
     <string name="features">Features</string>
     <string name="topics_description">Show topic sections below tasks</string>
+    <string name="statistics">Statistics</string>
+    <string name="active_tasks">Active Tasks</string>
+    <string name="completed_tasks_count">Completed Tasks</string>
 </resources>

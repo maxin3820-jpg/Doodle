@@ -30,6 +30,8 @@ fun SettingsScreen(
     val fontFamily by viewModel.fontFamily.collectAsStateWithLifecycle()
     val fontSize by viewModel.fontSize.collectAsStateWithLifecycle()
     val topicsEnabled by viewModel.topicsEnabled.collectAsStateWithLifecycle()
+    val activeTaskCount by viewModel.activeTaskCount.collectAsStateWithLifecycle()
+    val completedTaskCount by viewModel.completedTaskCount.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -131,6 +133,49 @@ fun SettingsScreen(
                     Switch(
                         checked = topicsEnabled,
                         onCheckedChange = { viewModel.setTopicsEnabled(it) }
+                    )
+                }
+            }
+
+            // Task statistics section
+            SettingsSection(title = stringResource(R.string.statistics)) {
+                // Active tasks count
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.active_tasks),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "$activeTaskCount",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                Divider()
+                
+                // Completed tasks count
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.completed_tasks_count),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "$completedTaskCount",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }

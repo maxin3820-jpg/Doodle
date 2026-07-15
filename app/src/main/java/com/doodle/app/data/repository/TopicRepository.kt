@@ -7,6 +7,7 @@ import com.doodle.app.data.database.TopicEntity
 import com.doodle.app.data.model.Task
 import com.doodle.app.data.model.Topic
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,16 +15,21 @@ import javax.inject.Singleton
 @Singleton
 class TopicRepository @Inject constructor(
     private val topicDao: TopicDao,
-    private val taskDao: TaskDao          // needed for cascade delete
+    private val taskDao: TaskDao
 ) {
+    // Combine topics flow with tasks flow to calculate counts reactively
     fun getAllTopics(): Flow<List<Topic>> =
-        topicDao.getAllTopicsWithCount().map { list -> 
-            list.map { topicWithCount ->
+        combine(
+            topicDao.getAllTopics(),
+            taskDao.getActiveTasks()
+        ) { topics, tasks ->
+            topics.map { entity ->
+                val count = tasks.count { it.topicId == entity.id }
                 Topic(
-                    id = topicWithCount.id,
-                    name = topicWithCount.name,
-                    createdAt = topicWithCount.createdAt,
-                    taskCount = topicWithCount.taskCount
+                    id = entity.id,
+                    name = entity.name,
+                    createdAt = entity.createdAt,
+                    taskCount = count
                 )
             }
         }
@@ -34,18 +40,11 @@ class TopicRepository @Inject constructor(
     suspend fun addTopic(name: String): Long =
         topicDao.insertTopic(TopicEntity(name = name.trim()))
 
-    // Bug 2 fix: delete all tasks belonging to this topic first, then delete the topic
     suspend fun deleteTopic(topic: Topic) {
         taskDao.deleteTasksByTopicId(topic.id)
         topicDao.deleteTopic(topic.toEntity())
     }
 
-    private fun TopicEntity.toTopic(taskCount: Int = 0) = Topic(
-        id = id, 
-        name = name, 
-        createdAt = createdAt,
-        taskCount = taskCount
-    )
     private fun Topic.toEntity() = TopicEntity(id = id, name = name, createdAt = createdAt)
     private fun TaskEntity.toTask() = Task(
         id = id, title = title, isCompleted = isCompleted,
